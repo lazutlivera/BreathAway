@@ -39,7 +39,7 @@ const SignUp = () => {
 
   return (
     <AppGradient colors={["#1612b2e", "#0a4d4a", "#766e67"]}>
-      <ScrollView>
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
           <Image
             source={Logo}
