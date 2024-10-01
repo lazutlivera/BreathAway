@@ -1,18 +1,19 @@
 import { Client, Account, ID, Databases } from
 "react-native-appwrite";
-import dotenv from 'dotenv'
 
-dotenv.config()
+
+
 
 export const config = {
-  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
-  platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM!,
-  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
-  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
-  userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID!
+  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT ?? '',
+  platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM ?? '',
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID ?? '',
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID ?? '',
+  userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID?? '',
+  routinesCollectionId: process.env.EXPO_PUBLIC_APPWRITE_ROUTINES_COLLECTION_ID?? ''
 };
 
-const client = new Client();
+export const client = new Client();
 client
 
   .setEndpoint(config.endpoint)
