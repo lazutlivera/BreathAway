@@ -1,13 +1,12 @@
-import {Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import React from "react";
 
 interface CustomButtonProps {
-    onPress:(e: any) => void,
-    textStyles?: string;
-    title: string,
-    containerStyles?: string,
-    isLoading: boolean
-
+  onPress: (e: any) => void;
+  textStyles?: string;
+  title: string;
+  containerStyles?: string;
+  isLoading?: boolean;
 }
 
 const CustomButton = ({
@@ -19,7 +18,7 @@ const CustomButton = ({
 }: CustomButtonProps) => {
   return (
     <TouchableOpacity
-        onPress={onPress}
+      onPress={onPress}
       activeOpacity={0.7}
       className={`bg-secondary rounded-xl min-h-[62px] justify-center items-center ${containerStyles} ${
         isLoading ? "opacity-50" : ""

@@ -1,12 +1,13 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
 import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Link, router } from "expo-router";
+
+import Logo from "../../assets/images/logo.png";
 
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
 import { createUser } from "@/lib/appwrite";
-
+import AppGradient from "@/components/AppGradient";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -37,16 +38,16 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <AppGradient colors={["#1612b2e", "#0a4d4a", "#766e67"]}>
       <ScrollView>
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
           <Image
-            source={images.logo}
+            source={Logo}
             resizeMode="contain"
             className="w-[115px] h-[85px]"
           />
           <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
-            Sign up to Aora
+            Sign up to BreathAway
           </Text>
           <FormField
             title="Username"
@@ -69,7 +70,7 @@ const SignUp = () => {
           />
           <CustomButton
             title="Sign up"
-            handlePress={submit}
+            onPress={submit}
             containerStyles="mt-7"
             isLoading={isSubmitting}
           />
@@ -86,7 +87,7 @@ const SignUp = () => {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </AppGradient>
   );
 };
 
