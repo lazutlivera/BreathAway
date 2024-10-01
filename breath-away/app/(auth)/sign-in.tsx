@@ -8,9 +8,12 @@ import CustomButton from "../../components/CustomButton";
 import AppGradient from "@/components/AppGradient";
 
 import Logo from "../../assets/images/logo.png";
-import { signIn } from "../../lib/appwrite";
+import { signIn, getCurrentUser } from "../../lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
-const SignIn = () => {
+
+function SignIn() {
+  const {setUser, setIsLoggedIn} = useGlobalContext()
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -20,14 +23,16 @@ const SignIn = () => {
   const submit = async () => {
     if (!form.email || !form.password) {
       Alert.alert("Error", "Please fill in all the fields");
+      return
     }
 
     setIsSubmitting(true);
 
     try {
       await signIn(form.email, form.password);
-      // setUser(result);
-      // setIsLoggedIn(true);
+      const result =  await getCurrentUser()
+      setUser(result)
+      setIsLoggedIn(true);
 
       router.replace("/home");
     } catch (error: any) {
@@ -45,8 +50,7 @@ const SignIn = () => {
             <Image
               source={Logo}
               resizeMode="contain"
-              className="w-[115px] h-[85px]"
-            />
+              className="w-[115px] h-[85px]" />
             <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
               Log in to Aora
             </Text>
@@ -55,20 +59,17 @@ const SignIn = () => {
               value={form.email}
               handleChangeText={(e) => setForm({ ...form, email: e })}
               otherStyles="mt-7"
-              keyboardType="email-address"
-            />
+              keyboardType="email-address" />
             <FormField
               title="Password"
               value={form.password}
               handleChangeText={(e) => setForm({ ...form, password: e })}
-              otherStyles="mt-7"
-            />
+              otherStyles="mt-7" />
             <CustomButton
               title="Sign in"
               onPress={submit}
               containerStyles="mt-7"
-              isLoading={isSubmitting}
-            />
+              isLoading={isSubmitting} />
             <View className="justify-center pt-5 flex-row gap-2">
               <Text className="text-lg text-gray-100 font-pregular">
                 Don't have an account?
@@ -85,6 +86,7 @@ const SignIn = () => {
       </SafeAreaView>
     </AppGradient>
   );
-};
+}
 
 export default SignIn;
+

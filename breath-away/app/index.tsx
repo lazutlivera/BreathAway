@@ -6,13 +6,13 @@ import "react-native-url-polyfill/auto";
 import CustomButton from "../components/CustomButton";
 import LogoAndText from "../assets/images/logo.png";
 import AppGradient from "@/components/AppGradient";
+import { useGlobalContext } from "../context/GlobalProvider";
 
-import { useContext } from "react";
-import { GlobalContext } from "../context/GlobalProvider";
+const App: React.FC = () => {
 
-export default function App() {
-  const data = useContext(GlobalContext);
-  const { isLoading, isLoggedIn } = data;
+  // const {isLoading, isLoggedIn} = useGlobalContext()
+
+  console.log(isLoggedIn)
 
   if (!isLoading && isLoggedIn) {
     return <Redirect href="/home" />;
