@@ -7,16 +7,16 @@ import CustomButton from "../components/CustomButton";
 import LogoAndText from "../assets/images/logo.png";
 import AppGradient from "@/components/AppGradient";
 
-// import { useContext } from "react";
-// import { GlobalContext } from "../context/GlobalProvider";
+import { useContext } from "react";
+import { GlobalContext } from "../context/GlobalProvider";
 
 export default function App() {
-  // const data = useContext(GlobalContext);
-  // const { isLoading, isLoggedIn } = data;
+  const data = useContext(GlobalContext);
+  const { isLoading, isLoggedIn } = data;
 
-  // if (!isLoading && isLoggedIn) {
-  //   return <Redirect href="/home" />;
-  // }
+  if (!isLoading && isLoggedIn) {
+    return <Redirect href="/home" />;
+  }
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
@@ -41,7 +41,7 @@ export default function App() {
 
           <CustomButton
             title="Continue with Email"
-            onPress={() => router.push("/sign-up")}
+            onPress={() => router.push("/sign-in")}
             containerStyles="w-full mt-7"
           />
         </View>
