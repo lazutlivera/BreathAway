@@ -16,7 +16,7 @@ const Welcome = () => {
         Welcome
       </Text>
       <Text className="text-gray-200 mb-3 font-light text-2xl text-center my-2">
-        Please take caution when excercising breakwork. If you are new to
+        Please take caution when exercising breathwork. If you are new to
         breathwork, please find more information in our{" "}
         <Text
           onPress={() => {

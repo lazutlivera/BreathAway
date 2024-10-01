@@ -19,7 +19,7 @@ export default function App() {
   // }
 
   return (
-    <AppGradient colors={["#1612b2e", "#0a4d4a", "#766e67"]}>
+    <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
