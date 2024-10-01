@@ -41,7 +41,7 @@ export default function App() {
 
           <CustomButton
             title="Continue with Email"
-            onPress={() => router.push("/sign-up")}
+            onPress={() => router.push("/(tabs)/home")}//revert this to sign-up
             containerStyles="w-full mt-7"
           />
         </View>
