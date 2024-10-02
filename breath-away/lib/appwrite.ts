@@ -1,18 +1,24 @@
 import { Client, Account, ID, Databases, Query } from "react-native-appwrite";
 
+
+
+
 export const config = {
-  endpoint: "https://cloud.appwrite.io/v1",
-  platform: "com.purplecobra.breathaway",
-  projectId: "66faab4e0003ef7eff83",
-  databaseId: "66faacc10005471edc42",
-  userCollectionId: "66faad4a000039ea291e",
+
+  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT ?? '',
+  platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM ?? '',
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID ?? '',
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID ?? '',
+  userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID?? '',
+  routinesCollectionId: process.env.EXPO_PUBLIC_APPWRITE_ROUTINES_COLLECTION_ID?? ''
 };
 
-const client = new Client();
+export const client = new Client();
 client
-  .setEndpoint("https://cloud.appwrite.io/v1")
-  .setProject("66faab4e0003ef7eff83")
-  .setPlatform("com.purplecobra.breathaway");
+
+  .setEndpoint(config.endpoint)
+  .setProject (config.projectId)
+  .setPlatform(config.platform);
 
 const account = new Account(client);
 const databases = new Databases(client);
