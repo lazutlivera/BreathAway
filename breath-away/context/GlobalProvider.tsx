@@ -1,6 +1,5 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
 import { getCurrentUser } from "../lib/appwrite";
-import { useContext } from "react";
 
 interface User {
   id: string,
@@ -39,7 +38,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
 
   useEffect(() => {
     getCurrentUser()
-      .then((res) => {
+      .then((res: any) => {
         if (res) {
           setIsLoggedIn(true);
           setUser(res);

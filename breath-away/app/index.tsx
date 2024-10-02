@@ -8,9 +8,9 @@ import LogoAndText from "../assets/images/logo.png";
 import AppGradient from "@/components/AppGradient";
 import { useGlobalContext } from "../context/GlobalProvider";
 
-const App: React.FC = () => {
+export default function App() {
 
-  // const {isLoading, isLoggedIn} = useGlobalContext()
+  const {isLoading, isLoggedIn} = useGlobalContext()
 
   console.log(isLoggedIn)
 

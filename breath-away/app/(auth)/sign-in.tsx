@@ -11,16 +11,27 @@ import Logo from "../../assets/images/logo.png";
 import { signIn, getCurrentUser } from "../../lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
 
 function SignIn() {
   const {setUser, setIsLoggedIn} = useGlobalContext()
-  const [form, setForm] = useState({
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [form, setForm] = useState<FormData>({
     email: "",
     password: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = async () => {
+  const submit = async (): Promise<void> => {
     if (!form.email || !form.password) {
       Alert.alert("Error", "Please fill in all the fields");
       return
@@ -31,8 +42,15 @@ function SignIn() {
     try {
       await signIn(form.email, form.password);
       const result =  await getCurrentUser()
-      setUser(result)
+      const user: User = transformDocumentToUser(result);
+
+      if(user){
+      setUser(user)
       setIsLoggedIn(true);
+      } else {
+        setUser(null)
+        setIsLoggedIn(false)
+      }
 
       router.replace("/home");
     } catch (error: any) {
@@ -40,6 +58,16 @@ function SignIn() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const transformDocumentToUser = (document: any): User | null => {
+    if (!document) return null;
+
+    return {
+      id: document.$id,
+      name: document.name,
+      email: document.email,
+    };
   };
 
   return (
