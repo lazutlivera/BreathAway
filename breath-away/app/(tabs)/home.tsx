@@ -12,6 +12,7 @@ interface Routine {
   $title: string;
   $img: string;
   $instructions: string;
+  $description: string;
 }
 
 const Home = () => {
@@ -21,24 +22,24 @@ const Home = () => {
     const getRoutines = async() => {
       try{
 
-        const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId, [Query.select(["title", "img", "instructions"])] );
+        const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId, [Query.select(["title", "img", "instructions", "description"])] );
         if(result){
           setRoutines(result.documents.map(doc => ({
             $title: doc.title,
             $img: doc.img,
-            $instructions: doc.instructions
+            $instructions: doc.instructions,
+            $description: doc.description
           })) as Routine[])   
         }
         
       }catch(error){
-        console.error("result is not there")
+      
         throw new Error;
       }
 
     }
     getRoutines();
   },[])
-  console.log(routines)
 
 
 
@@ -50,15 +51,29 @@ const Home = () => {
       horizontal={true}
       showsHorizontalScrollIndicator={false}
       pagingEnabled={true}
+      contentContainerStyle={{
+        flexGrow: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+
+      }}
+
       className="w-full h-full">
         {routines.map((routine, index) => (
-          <View key={index} className="w-64 h-64 m-4 justify-center items-center relative">
+          <>
+          <View key={index} className="w-64 h-64 m-4   justify-center items-center relative">
             <Image 
               source={{uri: routine.$img}} 
-              className="w-full h-full object-cover absolute inset-0 rounded-full" // Ensure the image is round
+              className="w-full h-full object-cover absolute"
             />
             <Text className="text-white text-lg font-bold z-10 relative">{routine.$title}</Text>
+
           </View>
+          <View key={index+100}className="w-full">
+            <Text className="text-white mt-2">{routine.$description}</Text>
+          </View>
+          </>
+
         ))}
       </ScrollView>
     </View>
