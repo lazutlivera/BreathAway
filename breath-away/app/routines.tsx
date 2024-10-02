@@ -11,3 +11,5 @@ const Routines = () => {
     </AppGradient>
   )
 }
+
+export default Routines
