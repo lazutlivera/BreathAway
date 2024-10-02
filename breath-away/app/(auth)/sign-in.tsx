@@ -42,7 +42,7 @@ function SignIn() {
     try {
       await signIn(form.email, form.password);
       const result =  await getCurrentUser()
-      const user: User = transformDocumentToUser(result);
+      const user: User | null = transformDocumentToUser(result);
 
       if(user){
       setUser(user)

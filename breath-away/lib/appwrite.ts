@@ -1,8 +1,5 @@
 import { Client, Account, ID, Databases, Query } from "react-native-appwrite";
 
-
-
-
 export const config = {
 
   endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT ?? '',
@@ -17,7 +14,7 @@ export const client = new Client();
 client
 
   .setEndpoint(config.endpoint)
-  .setProject (config.projectId)
+  .setProject(config.projectId)
   .setPlatform(config.platform);
 
 const account = new Account(client);
