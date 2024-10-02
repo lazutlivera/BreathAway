@@ -1,18 +1,18 @@
 import { Client, Account, ID, Databases, Query } from "react-native-appwrite";
 
 export const config = {
-
-  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT ?? '',
-  platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM ?? '',
-  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID ?? '',
-  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID ?? '',
-  userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID?? '',
-  routinesCollectionId: process.env.EXPO_PUBLIC_APPWRITE_ROUTINES_COLLECTION_ID?? ''
+  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT ?? "",
+  platform: process.env.EXPO_PUBLIC_APPWRITE_PLATFORM ?? "",
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID ?? "",
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID ?? "",
+  userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID ?? "",
+  routinesCollectionId:
+    process.env.EXPO_PUBLIC_APPWRITE_ROUTINES_COLLECTION_ID ?? "",
 };
 
 export const client = new Client();
-client
 
+client
   .setEndpoint(config.endpoint)
   .setProject(config.projectId)
   .setPlatform(config.platform);
@@ -83,3 +83,13 @@ export const getCurrentUser = async () => {
     console.log(error);
   }
 };
+
+export async function signOut() {
+  try {
+    const session = await account.deleteSession("current");
+
+    return session;
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
