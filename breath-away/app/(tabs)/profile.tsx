@@ -29,18 +29,17 @@ const Profile = () => {
 
   return (
     <AppGradient colors={["#161B2E", "#0A4D4A", "#766E67"]}>
-      <View className="flex justify-between p-2">
-        <View className="">
-          <TouchableOpacity
-            onPress={logout}
-            className="flex w-full items-end mb-10"
-          >
+      <View className="flex justify-between">
+        <View className="flex-row justify-end w-full">
+          <Text className="text-white pr-2 pt-1">Sign out</Text>
+          <TouchableOpacity onPress={logout} className="flex mb-10">
             <Image source={Logout} resizeMode="contain" className="w-6 h-6" />
           </TouchableOpacity>
         </View>
-        <View className="items-center">
-          <Text className="text-3xl text-center text-white">
-            Welcome {username}
+        <View className="w-full items-center mt-5">
+          <Text className="text-white text-3xl font-normal">
+            Welcome{" "}
+            <Text className="text-yellow-600 font-semibold">{username}</Text>
           </Text>
         </View>
       </View>
