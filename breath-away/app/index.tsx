@@ -9,10 +9,7 @@ import AppGradient from "@/components/AppGradient";
 import { useGlobalContext } from "../context/GlobalProvider";
 
 export default function App() {
-
-  const {isLoading, isLoggedIn} = useGlobalContext()
-
-  console.log(isLoggedIn)
+  const { isLoading, isLoggedIn } = useGlobalContext();
 
   if (!isLoading && isLoggedIn) {
     return <Redirect href="/home" />;
@@ -41,9 +38,7 @@ export default function App() {
 
           <CustomButton
             title="Continue with Email"
-
             onPress={() => router.push("/sign-in")}
-
             containerStyles="w-full mt-7"
           />
         </View>

@@ -43,7 +43,7 @@ const SignUp = () => {
             resizeMode="contain"
             className="w-[115px] h-[85px]"
           />
-          <Text className="text-2xl text-white text-semibold mt-10 font-psemibold">
+          <Text className="text-2xl text-white text-semibold mt-10 font-semibold">
             Sign up to BreathAway
           </Text>
           <FormField
@@ -72,12 +72,12 @@ const SignUp = () => {
             isLoading={isSubmitting}
           />
           <View className="justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">
+            <Text className="text-lg text-gray-100 font-regular">
               Already have an account?
             </Text>
             <Link
               href="/sign-in"
-              className="text-lg font-psemibold text-secondary"
+              className="text-lg font-semibold text-yellow-600"
             >
               Sign in
             </Link>
