@@ -38,6 +38,15 @@ const TabsLayout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="animation"
+        options={{
+          tabBarLabel: "Animation",
+          tabBarIcon: ({ color }) => (
+            <Entypo name="flower" size={24} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 };
