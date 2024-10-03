@@ -93,3 +93,22 @@ export async function signOut() {
     throw new Error(error);
   }
 }
+
+export interface Routine {
+  title: string;
+  img: string;
+  instructions: string;
+  description: string;
+}
+
+export const getRoutines = async() => {
+  try{
+
+    const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId, [Query.select(["title", "img", "instructions", "description"])] );
+  
+    return result;
+  }catch(error){
+  
+    throw new Error;
+  }
+}
