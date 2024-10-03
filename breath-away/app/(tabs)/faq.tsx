@@ -1,13 +1,17 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
 import AppGradient from "@/components/AppGradient";
 import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
-import faq from "@/constants/faq";
+import faqData from "@/constants/faqData";
 import { ScrollView } from "react-native";
 
+type StateType = {
+  [key: number]: boolean;
+};
+
 const Faq = () => {
-  const [isOpenQuestions, setIsOpenQuestions] = useState({});
+  const [isOpenQuestions, setIsOpenQuestions] = useState<StateType>({});
 
   const toggleQuestion = (index: number) => {
     setIsOpenQuestions((prevState) => ({
@@ -25,15 +29,9 @@ const Faq = () => {
           </Text>
         </View>
         <StatusBar style="light" />
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
+        <ScrollView>
           <View className="m-4">
-            {faq.map((item, index) => (
+            {faqData.map((item, index) => (
               <View key={index}>
                 <TouchableOpacity
                   className="rounded-lg mb-3 flex-row justify-between"

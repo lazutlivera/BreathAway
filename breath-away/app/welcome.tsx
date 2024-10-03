@@ -2,10 +2,9 @@ import { View, Text } from "react-native";
 import React from "react";
 import AppGradient from "@/components/AppGradient";
 import CustomButton from "@/components/CustomButton";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import logo from "../assets/images/logo.png";
 import { Image } from "react-native";
-import { StatusBar } from "expo-status-bar";
 
 const Welcome = () => {
   return (
