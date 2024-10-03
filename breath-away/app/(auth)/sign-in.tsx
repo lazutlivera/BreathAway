@@ -77,7 +77,7 @@ function SignIn() {
             resizeMode="contain"
             className="w-[325px] h-[150px]"
           />
-          <Text className="text-2xl text-white text-semibold mt-10 font-semibold">
+          <Text className="text-2xl text-white mt-10 font-semibold">
             Log in to BreathAway
           </Text>
           <FormField
