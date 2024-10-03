@@ -5,6 +5,7 @@ import CustomButton from "@/components/CustomButton";
 import { Link, router } from "expo-router";
 import logo from "../assets/images/logo.png";
 import { Image } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const Welcome = () => {
   return (
