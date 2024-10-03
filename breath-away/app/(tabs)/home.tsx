@@ -1,45 +1,34 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Modal} from "react-native";
 import React, { useEffect } from "react";
 import AppGradient from "@/components/AppGradient";
 import { useState } from "react";
-import { Databases, Query } from "react-native-appwrite";
-import {client, config} from "../../lib/appwrite";
 import { ScrollView } from "react-native";
 import { router } from "expo-router";
-const databases = new Databases(client)
+import { getRoutines, Routine } from "../../lib/appwrite";
 
-interface Routine {
-  $title: string;
-  $img: string;
-  $instructions: string;
-  $description: string;
-}
 
 const Home = () => {
+
   const [routines, setRoutines] = useState<Routine[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedInstructions, setSelectedInstructions] = useState<string>("");
 
   useEffect(()=>{
-    const getRoutines = async() => {
-      try{
-
-        const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId, [Query.select(["title", "img", "instructions", "description"])] );
-        if(result){
-          setRoutines(result.documents.map(doc => ({
-            $title: doc.title,
-            $img: doc.img,
-            $instructions: doc.instructions,
-            $description: doc.description
-          })) as Routine[])   
-        }
-        
-      }catch(error){
-      
-        throw new Error;
-      }
-
-    }
-    getRoutines();
+    
+    getRoutines().then((result: any) => {
+      setRoutines(result.documents.map((doc: any) => ({
+        title: doc.title,
+        img: doc.img,
+        instructions: doc.instructions,
+        description: doc.description
+      })) as Routine[]);
+    });
   },[])
+
+  const handleLongPress = (instructions: string) => {
+    setSelectedInstructions(instructions);
+    setModalVisible(true);
+  };
 
 
 
@@ -75,26 +64,60 @@ const Home = () => {
                 backgroundColor: 'white',
               
               }}>
-                <TouchableOpacity onPress={() => { router.push(`/routines` as any) }} className="w-full h-full rounded-full absolute">
+                <TouchableOpacity onLongPress={() => handleLongPress(routine.instructions) }  onPress={() => { router.push(`/routines` as any) }} className="w-full h-full rounded-full absolute">
                   <Image 
-                    source={{uri: routine.$img}} 
+                    source={{uri: routine.img}} 
                     className="w-full h-full rounded-full absolute"
                   />
                 </TouchableOpacity>
               </View>
               <View className="absolute w-full h-full justify-center items-center">
                 <Text className="text-white text-lg font-bold z-10">
-                  {routine.$title}
+                  {routine.title}
                 </Text>
               </View>
             </View>
             <View className="w-full mt-4">
-              <Text className="text-white mt-4 text-center">{routine.$description}</Text>
+              <Text className="text-white mt-4 text-center">{routine.description}</Text>
             </View>
           </View>
         ))}
       </ScrollView>
     </View>
+
+    
+    <Modal
+        animationType="fade"
+        transparent={true}
+        visible={modalVisible}
+
+  
+      >
+        <View className="flex-1 justify-center items-center mt-6" style={{
+          opacity: 0.9,
+        }}>
+          <View className="m-5 bg-blue-900 rounded-lg p-9 items-center shadow-lg shadow-black">
+            <Text className="text-white mb-4 text-center">{selectedInstructions}</Text>
+            <View className="flex-row justify-between w-full">
+              <TouchableOpacity
+                className="rounded-lg p-2 bg-blue-500 flex-1 mr-2"
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text className="text-white font-bold text-center">Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="rounded-lg p-2 bg-blue-500 flex-1 ml-2"
+                onPress={() => {
+                  router.push(`/routines` as any);
+                  setModalVisible(!modalVisible);
+                }}
+              >
+                <Text className="text-white font-bold text-center">Start</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </AppGradient>
   );
 };
