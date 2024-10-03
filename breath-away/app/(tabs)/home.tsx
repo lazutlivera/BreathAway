@@ -93,9 +93,7 @@ const Home = () => {
 
   
       >
-        <View className="flex-1 justify-center items-center mt-6" style={{
-          opacity: 0.9,
-        }}>
+        <View className="flex-1 justify-center items-center mt-6 opacity-90">
           <View className="m-5 bg-blue-900 rounded-lg p-9 items-center shadow-lg shadow-black">
             <Text className="text-white mb-4 text-center">{selectedInstructions}</Text>
             <View className="flex-row justify-between w-full">
