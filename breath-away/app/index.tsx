@@ -1,7 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { ScrollView, View, Text, Image } from "react-native";
 import { Redirect, router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 import "react-native-url-polyfill/auto";
 import CustomButton from "../components/CustomButton";
 import LogoAndText from "../assets/images/logo.png";
@@ -17,6 +16,7 @@ export default function App() {
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
+      <StatusBar style="light" />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
@@ -43,7 +43,6 @@ export default function App() {
           />
         </View>
       </ScrollView>
-      <StatusBar backgroundColor="#161622" style="light" />
     </AppGradient>
   );
 }

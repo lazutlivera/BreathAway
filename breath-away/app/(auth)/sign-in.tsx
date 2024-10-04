@@ -9,6 +9,7 @@ import AppGradient from "@/components/AppGradient";
 import Logo from "../../assets/images/logo.png";
 import { signIn, getCurrentUser } from "../../lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import { StatusBar } from "expo-status-bar";
 
 interface User {
   id: string;
@@ -52,7 +53,7 @@ function SignIn() {
 
       router.replace("/home");
     } catch (error: any) {
-      Alert.alert("Error", error);
+      Alert.alert("Oops!", "Incorrect credentials used, please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -70,6 +71,7 @@ function SignIn() {
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
+      <StatusBar style="light" />
       <ScrollView>
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
           <Image

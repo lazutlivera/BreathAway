@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import { useState } from "react";
 import AppGradient from "@/components/AppGradient";
-import { StatusBar } from "expo-status-bar";
 import { AntDesign } from "@expo/vector-icons";
 import faqData from "@/constants/faqData";
 import { ScrollView } from "react-native";
@@ -28,7 +27,6 @@ const Faq = () => {
             Frequently Asked Questions
           </Text>
         </View>
-        <StatusBar style="light" />
         <ScrollView>
           <View className="m-4">
             {faqData.map((item, index) => (

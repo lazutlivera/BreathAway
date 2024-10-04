@@ -28,7 +28,7 @@ const SignUp = () => {
       const result = await createUser(form.email, form.password, form.username);
       router.replace("/welcome");
     } catch (error: any) {
-      Alert.alert("Error", error);
+      Alert.alert("Error", error.message);
     } finally {
       setIsSubmitting(false);
     }
