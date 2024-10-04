@@ -16,7 +16,6 @@ const Home = () => {
       setRoutines(result.documents);
     });
   }, []);
-  console.log(routines)
 
   const handleLongPress = (instructions: string) => {
     setSelectedInstructions(instructions);
@@ -60,18 +59,22 @@ const Home = () => {
                     className="w-full h-full rounded-full absolute"
                   />
 
-                    <TouchableOpacity
-                      onLongPress={() => handleLongPress(routine.instructions)}
-                      onPress={() => { router.push({pathname: `/routines`, params: { id:routine.$id, title: routine.title, cid: routine.$collectionId } }) }}
-                      className="w-full h-full rounded-full absolute"
-                    >
-                      <View className="absolute w-full h-full justify-center items-center">
-                        <Text className="text-white text-lg font-bold z-10">
-                          {routine.title}
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                
+                  <TouchableOpacity
+                    onLongPress={() => handleLongPress(routine.instructions)}
+                    onPress={() => {
+                      router.push({
+                        pathname: `/routines`,
+                        params: { id: routine.$id, title: routine.title },
+                      });
+                    }}
+                    className="w-full h-full rounded-full absolute"
+                  >
+                    <View className="absolute w-full h-full justify-center items-center">
+                      <Text className="text-white text-lg font-bold z-10">
+                        {routine.title}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               </View>
               <View className="w-full mt-4">
