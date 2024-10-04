@@ -1,11 +1,9 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import { Link, router } from "expo-router";
-
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
 import AppGradient from "@/components/AppGradient";
-
 import Logo from "../../assets/images/logo.png";
 import { signIn, getCurrentUser } from "../../lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -52,7 +50,7 @@ function SignIn() {
 
       router.replace("/home");
     } catch (error: any) {
-      Alert.alert("Error", error);
+      Alert.alert("Oops!", "Incorrect credentials used, please try again.");
     } finally {
       setIsSubmitting(false);
     }

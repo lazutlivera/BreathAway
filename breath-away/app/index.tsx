@@ -1,7 +1,5 @@
-import { StatusBar } from "expo-status-bar";
 import { ScrollView, View, Text, Image } from "react-native";
 import { Redirect, router } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
 import "react-native-url-polyfill/auto";
 import CustomButton from "../components/CustomButton";
 import LogoAndText from "../assets/images/logo.png";
@@ -32,7 +30,7 @@ export default function App() {
             </Text>
           </View>
           <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-            Where creativity meets innovation: embark on a journey of limetless
+            Where creativity meets innovation: embark on a journey of limitless
             exploration with BreathAway
           </Text>
 
@@ -43,7 +41,6 @@ export default function App() {
           />
         </View>
       </ScrollView>
-      <StatusBar backgroundColor="#161622" style="light" />
     </AppGradient>
   );
 }
