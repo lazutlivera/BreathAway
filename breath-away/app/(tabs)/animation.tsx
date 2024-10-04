@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Animated, View, Text } from "react-native";
 import AppGradient from "@/components/AppGradient";
+import * as Haptics from 'expo-haptics'
 
 const FlowerAnimation = () => {
   const instructions = ["inhale", "hold", "exhale"];
@@ -14,9 +15,10 @@ const FlowerAnimation = () => {
     const updateInstructionAndTime = () => {
       const nextIndex = (currentIndex + 1) % instructions.length;
 
+      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+
       setInstruction(instructions[nextIndex]);
       setTime(timing[nextIndex]);
-
       setCurrentIndex(nextIndex);
     };
 
