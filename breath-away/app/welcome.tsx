@@ -10,13 +10,13 @@ const Welcome = () => {
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
       <View className="flex-1 justify-center items-center mt-10">
-        <Text className="text-gray-200 mb-3 font-light text-3xl text-center my-5">
+        <Text className="text-gray-200 mb-3 font-light text-3xl text-center my-5 w-11/12">
           Welcome to BreathAway
         </Text>
         <Image source={logo} className="w-36 h-36" />
       </View>
       <View className="items-center">
-        <Text className="text-gray-200 mb-3 font-light text-2xl text-center my-2 w-11/12">
+        <Text className="text-gray-200 mb-3 font-light text-2xl text-center my-2 w-10/12">
           Please take caution when exercising breathwork. If you are new to
           breathing routines, please find more information in our{" "}
           <Text
@@ -28,7 +28,7 @@ const Welcome = () => {
             FAQ
           </Text>
         </Text>
-        <Text className="text-gray-200 mb-3 font-light text-2xl text-center my-5">
+        <Text className="text-gray-200 mb-3 font-light text-2xl text-center mt-10">
           Are you ready to explore?
         </Text>
         <CustomButton
@@ -37,7 +37,7 @@ const Welcome = () => {
             router.push("/(tabs)/home");
           }}
           isLoading={false}
-          containerStyles="shadow-xl shadow-yellow-700 my-20 w-8/12"
+          containerStyles="shadow-xl shadow-yellow-700 my-20 mb-20 w-8/12"
         ></CustomButton>
       </View>
     </AppGradient>

@@ -1,9 +1,7 @@
 import { View, Text, ScrollView, Image, Alert } from "react-native";
 import React, { useState } from "react";
 import { Link, router } from "expo-router";
-
 import Logo from "../../assets/images/logo.png";
-
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
 import { createUser } from "@/lib/appwrite";
@@ -28,7 +26,7 @@ const SignUp = () => {
       const result = await createUser(form.email, form.password, form.username);
       router.replace("/welcome");
     } catch (error: any) {
-      Alert.alert("Error", error.message);
+      Alert.alert("Oops!", error.message);
     } finally {
       setIsSubmitting(false);
     }

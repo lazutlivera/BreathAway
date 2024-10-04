@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ScrollView } from "react-native";
 import { router } from "expo-router";
 import { getRoutines, Routine } from "../../lib/appwrite";
-import { StatusBar } from "expo-status-bar";
 
 const Home = () => {
   const [routines, setRoutines] = useState<Routine[]>([]);
@@ -32,7 +31,6 @@ const Home = () => {
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
-      <StatusBar style="light" />
       <View className="flex-1 items-center justify-center">
         <Text className="text-white text-2xl font-bold">Routines</Text>
         <ScrollView

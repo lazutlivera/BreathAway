@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { ScrollView, View, Text, Image } from "react-native";
 import { Redirect, router } from "expo-router";
 import "react-native-url-polyfill/auto";
@@ -16,7 +15,6 @@ export default function App() {
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
-      <StatusBar style="light" />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
@@ -32,7 +30,7 @@ export default function App() {
             </Text>
           </View>
           <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-            Where creativity meets innovation: embark on a journey of limetless
+            Where creativity meets innovation: embark on a journey of limitless
             exploration with BreathAway
           </Text>
 
