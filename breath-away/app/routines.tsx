@@ -6,8 +6,8 @@ import { getRoutinesById } from "@/lib/appwrite";
 
 interface Routine {
   inhale: number;
+  exhale: number;
   hold: number | null;
-  exhale: number | null;
   holdAfterExhale: number | null;
   secondInhale: number | null;
   $collectionId: string;
@@ -27,6 +27,7 @@ const Routines = () => {
   const [routine, setRoutine] = useState<Routine | null>(null);
   const [instruction, setInstruction] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  // const [count, setCount] = useState<number>(0)
 
   const route = useRoute();
   const { title, id } = route.params as { title: string; id: string };
@@ -35,20 +36,12 @@ const Routines = () => {
     getRoutinesById(id).then((result) => {
       setRoutine(result.documents[0] as Routine);
       setTime(result.documents[0].inhale * 1000);
-      setInstruction("inhale");
+      setInstruction("Inhale");
     });
-  }, []);
 
-  useEffect(() => {
     if (!routine) return;
-
-    const instructions = [
-      "inhale",
-      "hold",
-      "exhale",
-      "holdAfterExhale",
-      "secondInhale",
-    ];
+  
+    const instructions = ["Inhale", "Hold", "Exhale", "Hold"];
     const times = [
       routine.inhale,
       routine.hold,
@@ -56,26 +49,24 @@ const Routines = () => {
       routine.holdAfterExhale,
       routine.secondInhale,
     ];
-
+  
     const updateInstructionAndTime = () => {
       const nextIndex = (currentIndex + 1) % instructions.length;
+      setInstruction(instructions[nextIndex]);
+      setTime((times[nextIndex] ?? 0) * 1000);
+      setCurrentIndex(nextIndex);
 
-      const nextInstruction = instructions[nextIndex];
-      const nextTime = times[nextIndex];
-
-      if (nextTime !== null) {
-        setInstruction(nextInstruction);
-        setTime(nextTime * 1000);
-        setCurrentIndex(nextIndex);
-      } else {
-        setCurrentIndex((nextIndex + 1) % instructions.length);
-      }
+  
+ 
     };
-
+  
     const interval = setInterval(updateInstructionAndTime, time);
+  
+    clearInterval(interval);
+  }, [id, currentIndex, instruction, time]);
 
-    return () => clearInterval(interval);
-  }, [currentIndex, time]);
+
+
 
   const petalAnim = useRef(new Animated.Value(0)).current;
   const petalAnim2 = useRef(new Animated.Value(0)).current;
@@ -115,7 +106,7 @@ const Routines = () => {
               useNativeDriver: true,
             }),
           ]),
-          Animated.delay(routine.hold * 1000),
+          Animated.delay((routine.hold ?? 0) * 1000),
           Animated.timing(petalAnim, {
             toValue: 0,
             duration: (routine.exhale * 1000) / 5,
@@ -141,15 +132,18 @@ const Routines = () => {
             duration: (routine.exhale * 1000) / 5,
             useNativeDriver: true,
           }),
-          Animated.delay(0),
+          Animated.delay(
+            routine.holdAfterExhale ? routine.holdAfterExhale * 1000 : 0
+          ),
         ]),
+
         {
-          iterations: -1,
+          iterations: routine.repeat ?? 1,
         }
       ).start();
     };
     animatePetals();
-  }, []);
+  }, [routine]);
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
@@ -157,7 +151,7 @@ const Routines = () => {
         {/* Petal 1 */}
         <Animated.View
           className={
-            instruction === "hold"
+            instruction === "Hold"
               ? "absolute bg-blue-700 opacity-75 w-32 h-32 rounded-full"
               : "absolute bg-blue-500 opacity-75 w-32 h-32 rounded-full"
           }
@@ -183,7 +177,7 @@ const Routines = () => {
         {/* Petal 2 */}
         <Animated.View
           className={
-            instruction === "hold"
+            instruction === "Hold"
               ? "absolute bg-blue-700 opacity-75 w-32 h-32 rounded-full"
               : "absolute bg-blue-500 opacity-75 w-32 h-32 rounded-full"
           }
@@ -209,7 +203,7 @@ const Routines = () => {
         {/* Petal 3 */}
         <Animated.View
           className={
-            instruction === "hold"
+            instruction === "Hold"
               ? "absolute bg-blue-700 opacity-75 w-32 h-32 rounded-full"
               : "absolute bg-blue-500 opacity-75 w-32 h-32 rounded-full"
           }
@@ -235,7 +229,7 @@ const Routines = () => {
         {/* Petal 4 */}
         <Animated.View
           className={
-            instruction === "hold"
+            instruction === "Hold"
               ? "absolute bg-blue-700 opacity-75 w-32 h-32 rounded-full"
               : "absolute bg-blue-500 opacity-75 w-32 h-32 rounded-full"
           }
@@ -261,7 +255,7 @@ const Routines = () => {
         {/* Petal 5 */}
         <Animated.View
           className={
-            instruction === "hold"
+            instruction === "Hold"
               ? "absolute bg-blue-700 opacity-75 w-32 h-32 rounded-full"
               : "absolute bg-blue-500 opacity-75 w-32 h-32 rounded-full"
           }
