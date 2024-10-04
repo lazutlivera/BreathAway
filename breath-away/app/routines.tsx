@@ -39,6 +39,9 @@ const Routines = () => {
       setInstruction("Inhale");
     });
 
+  }, [id])
+
+  useEffect(() => {
     if (!routine) return;
   
     const instructions = ["Inhale", "Hold", "Exhale", "Hold"];
@@ -47,26 +50,51 @@ const Routines = () => {
       routine.hold,
       routine.exhale,
       routine.holdAfterExhale,
-      routine.secondInhale,
     ];
-  
-    const updateInstructionAndTime = () => {
-      const nextIndex = (currentIndex + 1) % instructions.length;
-      setInstruction(instructions[nextIndex]);
-      setTime((times[nextIndex] ?? 0) * 1000);
-      setCurrentIndex(nextIndex);
 
-  
- 
+    let timeoutId: NodeJS.Timeout | null = null;
+    let currentCycle = 0;
+    let currentIndex = 0;
+
+    const runNextInstruction = () => {
+      if (currentCycle >= (routine.repeat ?? 1)) {
+        setInstruction('Completed');
+        setCurrentIndex(0);
+        // setCount(routine.repeat ?? 1);
+        return;
+      }
+
+      while (currentIndex < instructions.length && !times[currentIndex]) {
+        currentIndex++;
+      }
+
+      if (currentIndex >= instructions.length) {
+        currentCycle++;
+        currentIndex = 0;
+        runNextInstruction();
+        return;
+      }
+
+      setInstruction(instructions[currentIndex]);
+      setTime((times[currentIndex] ?? 0) * 1000);
+      setCurrentIndex(currentIndex);
+      // setCount(currentCycle);
+
+      timeoutId = setTimeout(() => {
+        currentIndex++;
+        runNextInstruction();
+      }, (times[currentIndex] ?? 0) * 1000);
     };
-  
-    const interval = setInterval(updateInstructionAndTime, time);
-  
-    clearInterval(interval);
-  }, [id, currentIndex, instruction, time]);
 
+    runNextInstruction();
 
-
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+      }
+    };
+  }, [routine]);
 
   const petalAnim = useRef(new Animated.Value(0)).current;
   const petalAnim2 = useRef(new Animated.Value(0)).current;
