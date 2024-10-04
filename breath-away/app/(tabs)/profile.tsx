@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
@@ -28,6 +28,23 @@ const Profile = () => {
     router.replace("/sign-in");
   };
 
+  const confirmLogout = () => {
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out?",
+      [{
+        text: 'No',
+        onPress: () => console.log("Logout Cancelled"),
+        style: "cancel"
+      }, {
+        text: "Yes",
+        onPress: logout,
+      },
+    ],
+    {cancelable: true}
+    )
+  }
+
   const handleRoutinePress = (routineName: string) => {
     // Add your navigation or any action for the routine here
     console.log(`Pressed ${routineName}`);
@@ -39,7 +56,7 @@ const Profile = () => {
         {/* Header Section */}
         <View className="flex-row justify-between items-center px-4 mt-4">
           <Text className="text-white text-lg font-semibold">Profile</Text>
-          <TouchableOpacity onPress={logout} className="bg-red-600 rounded-lg px-3 py-2 flex flex-row items-center">
+          <TouchableOpacity onPress={confirmLogout} className="bg-red-600 rounded-lg px-3 py-2 flex flex-row items-center">
             <Image source={Logout} resizeMode="contain" className="w-5 h-5" />
             <Text className="text-white ml-2">Logout</Text>
           </TouchableOpacity>
