@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  Switch,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
@@ -15,7 +16,7 @@ import AppGradient from "@/components/AppGradient";
 import profilePictureUrl from "../../assets/images/logo.png";
 
 const Profile = () => {
-  const { setUser, setIsLoggedIn } = useGlobalContext();
+  const { setUser, setIsLoggedIn, showInstructions, toggleShowInstructions } = useGlobalContext();
   const [username, setUsername] = useState<string | null>(null);
   const [completedRoutines, setCompletedRoutines] = useState<any[]>([]);
 
@@ -58,6 +59,10 @@ const Profile = () => {
     console.log(`Pressed ${routineName}`);
   };
 
+  const handleToggleShowInstructions = (value: boolean) => {
+    toggleShowInstructions(value);
+  };
+
   return (
     <AppGradient colors={["#161B2E", "#0A4D4A", "#766E67"]}>
       <View className="flex-1 justify-between">
@@ -70,6 +75,15 @@ const Profile = () => {
             <Image source={Logout} resizeMode="contain" className="w-5 h-5" />
             <Text className="text-white ml-2">Logout</Text>
           </TouchableOpacity>
+        </View>
+
+        {/* Add this before the Recently Completed Routines Section */}
+        <View className="flex-row justify-between items-center px-4 mt-4">
+          <Text className="text-white text-lg">Show Instructions</Text>
+          <Switch
+            value={showInstructions}
+            onValueChange={handleToggleShowInstructions}
+          />
         </View>
 
         {/* Profile Section */}
