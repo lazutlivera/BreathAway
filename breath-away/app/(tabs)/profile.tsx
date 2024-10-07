@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  Alert,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
@@ -32,18 +39,20 @@ const Profile = () => {
     Alert.alert(
       "Sign Out",
       "Are you sure you want to sign out?",
-      [{
-        text: 'No',
-        onPress: () => console.log("Logout Cancelled"),
-        style: "cancel"
-      }, {
-        text: "Yes",
-        onPress: logout,
-      },
-    ],
-    {cancelable: true}
-    )
-  }
+      [
+        {
+          text: "No",
+          onPress: () => console.log("Logout Cancelled"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: logout,
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   const handleRoutinePress = (routineName: string) => {
     // Add your navigation or any action for the routine here
@@ -56,7 +65,10 @@ const Profile = () => {
         {/* Header Section */}
         <View className="flex-row justify-between items-center px-4 mt-4">
           <Text className="text-white text-lg font-semibold">Profile</Text>
-          <TouchableOpacity onPress={confirmLogout} className="bg-red-600 rounded-lg px-3 py-2 flex flex-row items-center">
+          <TouchableOpacity
+            onPress={confirmLogout}
+            className="bg-red-600 rounded-lg px-3 py-2 flex flex-row items-center"
+          >
             <Image source={Logout} resizeMode="contain" className="w-5 h-5" />
             <Text className="text-white ml-2">Logout</Text>
           </TouchableOpacity>
@@ -86,8 +98,13 @@ const Profile = () => {
 
         {/* Recently Completed Routines Section */}
         <View className="mt-6 w-full flex-1 align-items-center">
-          <Text className="text-white text-lg font-semibold mb-2 text-center">Recently Completed Routines</Text>
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 20 }}>
+          <Text className="text-white text-lg font-semibold mb-2 text-center">
+            Recently Completed Routines
+          </Text>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 20 }}
+          >
             <View className="flex-col pl-8">
               {/* Placeholder for recently completed routines */}
               {[...Array(10)].map((_, index) => (
