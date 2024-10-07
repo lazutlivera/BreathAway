@@ -94,17 +94,33 @@ export async function signOut() {
   }
 }
 
-export interface Routine {
-  title: string;
-  img: string;
-  instructions: string;
-  description: string;
-}
+// export interface Routine {
+//   title: string;
+//   img: string;
+//   instructions: string;
+//   description: string,
+  
+
+
+// }
 
 export const getRoutines = async() => {
   try{
 
-    const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId, [Query.select(["title", "img", "instructions", "description"])] );
+    const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId);
+  
+    return result;
+  }catch(error){
+  
+    throw new Error;
+  }
+}
+
+
+export const getRoutinesById = async(id: string) => {
+  try{
+
+    const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId, [Query.equal("$id", [id])]);
   
     return result;
   }catch(error){

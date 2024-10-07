@@ -3,24 +3,19 @@ import React, { useEffect } from "react";
 import AppGradient from "@/components/AppGradient";
 import { useState } from "react";
 import { ScrollView } from "react-native";
-import { router } from "expo-router";
-import { getRoutines, Routine } from "../../lib/appwrite";
+import { router, Link } from "expo-router";
+import { getRoutines } from "../../lib/appwrite";
 
 const Home = () => {
-  const [routines, setRoutines] = useState<Routine[]>([]);
+  const [routines, setRoutines] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedInstructions, setSelectedInstructions] = useState<string>("");
 
   useEffect(() => {
     getRoutines().then((result: any) => {
-      setRoutines(
-        result.documents.map((doc: any) => ({
-          title: doc.title,
-          img: doc.img,
-          instructions: doc.instructions,
-          description: doc.description,
-        })) as Routine[]
-      );
+
+      setRoutines(result.documents);
+
     });
   }, []);
 
@@ -40,6 +35,9 @@ const Home = () => {
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: "center",
+
+            // alignItems: 'center',
+
             marginHorizontal: 16,
             marginVertical: 120,
             paddingVertical: 50,
@@ -60,27 +58,33 @@ const Home = () => {
                     backgroundColor: "white",
                   }}
                 >
+
+                  <Image
+                    source={{ uri: routine.img }}
+                    className="w-full h-full rounded-full absolute"
+                  />
+
                   <TouchableOpacity
                     onLongPress={() => handleLongPress(routine.instructions)}
                     onPress={() => {
-                      router.push(`/routines` as any);
+                      router.push({
+                        pathname: `/routines`,
+                        params: { id: routine.$id, title: routine.title },
+                      });
                     }}
                     className="w-full h-full rounded-full absolute"
                   >
-                    <Image
-                      source={{ uri: routine.img }}
-                      className="w-full h-full rounded-full absolute"
-                    />
+                    <View className="absolute w-full h-full justify-center items-center">
+                      <Text className="text-white text-lg font-bold z-10">
+                        {routine.title}
+                      </Text>
+                    </View>
                   </TouchableOpacity>
-                </View>
-                <View className="absolute w-full h-full justify-center items-center">
-                  <Text className="text-white text-lg font-bold z-10">
-                    {routine.title}
-                  </Text>
                 </View>
               </View>
               <View className="w-full mt-4">
-                <Text className="text-white mt-4 text-center font-light">
+                <Text className="text-white mt-4 text-center">
+
                   {routine.description}
                 </Text>
               </View>
@@ -92,7 +96,9 @@ const Home = () => {
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View className="flex-1 justify-center items-center mt-6 opacity-90">
           <View className="m-5 bg-blue-900 rounded-lg p-9 items-center shadow-lg shadow-black">
-            <Text className="text-white mb-4 text-center font-light">
+
+            <Text className="text-white mb-4 text-center">
+
               {selectedInstructions}
             </Text>
             <View className="flex-row justify-between w-full">
@@ -120,3 +126,7 @@ const Home = () => {
 };
 
 export default Home;
+
+
+//
+
