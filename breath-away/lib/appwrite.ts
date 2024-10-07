@@ -163,7 +163,6 @@ export const saveCompletedRoutine = async (
 
 export const getUserCompletedRoutines = async () => {
   try {
-    // Fetch the current user
     const currentAccount = await account.get();
 
     if (!currentAccount) throw new Error("No account found");
@@ -178,11 +177,10 @@ export const getUserCompletedRoutines = async () => {
 
     const user = currentUser.documents[0];
 
-    // Fetch completed routines for the found user
     const completedRoutinesResult = await databases.listDocuments(
       config.databaseId,
       config.completedRoutines,
-      [Query.equal("userId", user.accountId)] // Use the correct user ID field
+      [Query.equal("userId", user.accountId)]
     );
 
     console.log("User's completed routines:", completedRoutinesResult);

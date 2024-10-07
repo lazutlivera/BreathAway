@@ -70,12 +70,10 @@ const Routines = () => {
     let currentIndex = 0;
 
     const runNextInstruction = () => {
-      // Check if the current cycle count has reached the routine repeat value
       if (currentCycle >= (routine.repeat ?? 1)) {
         setInstruction("Completed");
         setCurrentIndex(0);
 
-        // Routine has finished, call saveCompletedRoutine
         if (currentUserId) {
           console.log("Routine completed, saving...");
           saveCompletedRoutine(
@@ -95,25 +93,21 @@ const Routines = () => {
         return;
       }
 
-      // Skip instructions with null or undefined times (like Hold)
       while (currentIndex < instructions.length && !times[currentIndex]) {
         currentIndex++;
       }
 
-      // If we've cycled through all the instructions, start a new cycle
       if (currentIndex >= instructions.length) {
         currentCycle++;
         currentIndex = 0;
-        runNextInstruction(); // Start the next cycle
+        runNextInstruction();
         return;
       }
 
-      // Set the current instruction and timing
       setInstruction(instructions[currentIndex]);
       setTime((times[currentIndex] ?? 0) * 1000);
       setCurrentIndex(currentIndex);
 
-      // Move to the next instruction after the time has elapsed
       timeoutId = setTimeout(() => {
         currentIndex++;
         runNextInstruction();
@@ -128,8 +122,7 @@ const Routines = () => {
         timeoutId = null;
       }
     };
-  }, [routine, currentUserId]); // Added currentUserId to dependency array
-
+  }, [routine, currentUserId]);
   const petalAnim = useRef(new Animated.Value(0)).current;
   const petalAnim2 = useRef(new Animated.Value(0)).current;
   const petalAnim3 = useRef(new Animated.Value(0)).current;
