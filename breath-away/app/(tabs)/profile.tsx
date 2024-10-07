@@ -62,11 +62,13 @@ const Profile = () => {
     <AppGradient colors={["#161B2E", "#0A4D4A", "#766E67"]}>
       <View className="flex-1 justify-between">
         {/* Header Section */}
+
         <View className="flex flex-row items-end px-4 mt-4">
           <TouchableOpacity
             onPress={confirmLogout}
             className="bg-red-600 rounded-lg px-3 py-2 flex flex-row items-center ml-auto"
-          >
+
+          
             <Image source={Logout} resizeMode="contain" className="w-5 h-5" />
             <Text className="text-white ml-2">Logout</Text>
           </TouchableOpacity>
