@@ -13,9 +13,7 @@ const Home = () => {
 
   useEffect(() => {
     getRoutines().then((result: any) => {
-
       setRoutines(result.documents);
-
     });
   }, []);
 
@@ -35,9 +33,6 @@ const Home = () => {
           contentContainerStyle={{
             flexGrow: 1,
             justifyContent: "center",
-
-            // alignItems: 'center',
-
             marginHorizontal: 16,
             marginVertical: 120,
             paddingVertical: 50,
@@ -58,7 +53,6 @@ const Home = () => {
                     backgroundColor: "white",
                   }}
                 >
-
                   <Image
                     source={{ uri: routine.img }}
                     className="w-full h-full rounded-full absolute"
@@ -84,7 +78,6 @@ const Home = () => {
               </View>
               <View className="w-full mt-4">
                 <Text className="text-white mt-4 text-center">
-
                   {routine.description}
                 </Text>
               </View>
@@ -96,9 +89,7 @@ const Home = () => {
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View className="flex-1 justify-center items-center mt-6 opacity-90">
           <View className="m-5 bg-blue-900 rounded-lg p-9 items-center shadow-lg shadow-black">
-
             <Text className="text-white mb-4 text-center">
-
               {selectedInstructions}
             </Text>
             <View className="flex-row justify-between w-full">
@@ -127,6 +118,4 @@ const Home = () => {
 
 export default Home;
 
-
 //
-
