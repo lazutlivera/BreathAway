@@ -8,6 +8,7 @@ export const config = {
   userCollectionId: process.env.EXPO_PUBLIC_APPWRITE_USER_COLLECTION_ID ?? "",
   routinesCollectionId:
     process.env.EXPO_PUBLIC_APPWRITE_ROUTINES_COLLECTION_ID ?? "",
+  completedRoutines: "6703c9a4002e7d5042c6",
 };
 
 export const client = new Client();
@@ -99,32 +100,99 @@ export async function signOut() {
 //   img: string;
 //   instructions: string;
 //   description: string,
-  
-
 
 // }
 
-export const getRoutines = async() => {
-  try{
+export const getRoutines = async () => {
+  try {
+    const result = await databases.listDocuments(
+      config.databaseId,
+      config.routinesCollectionId
+    );
 
-    const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId);
-  
     return result;
-  }catch(error){
-  
-    throw new Error;
+  } catch (error) {
+    throw new Error();
   }
-}
+};
 
+export const getRoutinesById = async (id: string) => {
+  try {
+    const result = await databases.listDocuments(
+      config.databaseId,
+      config.routinesCollectionId,
+      [Query.equal("$id", [id])]
+    );
 
-export const getRoutinesById = async(id: string) => {
-  try{
-
-    const result = await databases.listDocuments(config.databaseId, config.routinesCollectionId, [Query.equal("$id", [id])]);
-  
     return result;
-  }catch(error){
-  
-    throw new Error;
+  } catch (error) {
+    throw new Error();
   }
-}
+};
+
+export const saveCompletedRoutine = async (
+  userId: string,
+  routineId: string,
+  routineName: string,
+  completionDate: string
+) => {
+  try {
+    console.log("Saving completed routine with params:", {
+      userId,
+      routineId,
+      routineName,
+      completionDate,
+    });
+    const result = await databases.createDocument(
+      config.databaseId,
+      config.completedRoutines,
+      ID.unique(),
+      {
+        userId,
+        routineId,
+        routineName,
+        completionDate,
+      }
+    );
+    return result;
+  } catch (error: any) {
+    console.log("Error saving completed routine:", error);
+    throw new Error(error);
+  }
+};
+
+export const getUserCompletedRoutines = async () => {
+  try {
+    // Fetch the current user
+    const currentAccount = await account.get();
+
+    if (!currentAccount) throw new Error("No account found");
+
+    const currentUser = await databases.listDocuments(
+      config.databaseId,
+      config.userCollectionId,
+      [Query.equal("accountId", currentAccount.$id)]
+    );
+
+    if (!currentUser.documents.length) throw new Error("No user found");
+
+    const user = currentUser.documents[0];
+
+    // Fetch completed routines for the found user
+    const completedRoutinesResult = await databases.listDocuments(
+      config.databaseId,
+      config.completedRoutines,
+      [Query.equal("userId", user.accountId)] // Use the correct user ID field
+    );
+
+    console.log("User's completed routines:", completedRoutinesResult);
+
+    return {
+      user,
+      completedRoutines: completedRoutinesResult.documents,
+    };
+  } catch (error: any) {
+    console.log("Error fetching user and completed routines:", error);
+    throw new Error(error);
+  }
+};
