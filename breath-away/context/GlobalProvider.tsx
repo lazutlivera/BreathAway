@@ -6,6 +6,7 @@ import React, {
   useContext,
 } from "react";
 import { getCurrentUser } from "../lib/appwrite";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface User {
   id: string;
@@ -18,6 +19,8 @@ interface GlobalContextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
   isLoading: boolean;
+  showInstructions: boolean;
+  toggleShowInstructions: (value: boolean) => void;
 }
 
 export const GlobalContext = createContext<GlobalContextType | undefined>(
@@ -40,6 +43,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
     getCurrentUser()
@@ -58,11 +62,28 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
       .finally(() => {
         setIsLoading(false);
       });
+
+    AsyncStorage.getItem('showInstructions').then((value) => {
+      setShowInstructions(value === 'true');
+    });
   }, []);
+
+  const toggleShowInstructions = (value: boolean) => {
+    setShowInstructions(value);
+    AsyncStorage.setItem('showInstructions', value.toString());
+  };
 
   return (
     <GlobalContext.Provider
-      value={{ isLoggedIn, setIsLoggedIn, user, setUser, isLoading }}
+      value={{ 
+        isLoggedIn, 
+        setIsLoggedIn, 
+        user, 
+        setUser, 
+        isLoading, 
+        showInstructions, 
+        toggleShowInstructions 
+      }}
     >
       {children}
     </GlobalContext.Provider>

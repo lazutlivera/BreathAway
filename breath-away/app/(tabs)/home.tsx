@@ -5,20 +5,27 @@ import { useState } from "react";
 import { ScrollView } from "react-native";
 import { router, Link } from "expo-router";
 import { getRoutines } from "../../lib/appwrite";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
 const Home = () => {
   const [routines, setRoutines] = useState<any[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedInstructions, setSelectedInstructions] = useState<string>("");
 
+  const { showInstructions } = useGlobalContext();
+
+  const [selectedRoutine, setSelectedRoutine] = useState<any>(null);
+
   useEffect(() => {
     getRoutines().then((result: any) => {
       setRoutines(result.documents);
     });
+
   }, []);
 
-  const handleLongPress = (instructions: string) => {
-    setSelectedInstructions(instructions);
+  const handlePress = (routine: any) => {
+    setSelectedRoutine(routine);
+    setSelectedInstructions(routine.instructions);
     setModalVisible(true);
   };
 
@@ -59,12 +66,15 @@ const Home = () => {
                   />
 
                   <TouchableOpacity
-                    onLongPress={() => handleLongPress(routine.instructions)}
                     onPress={() => {
-                      router.push({
-                        pathname: `/routines`,
-                        params: { id: routine.$id, title: routine.title },
-                      });
+                      if (showInstructions) {
+                        handlePress(routine);
+                      } else {
+                        router.push({
+                          pathname: `/routines`,
+                          params: { id: routine.$id, title: routine.title },
+                        });
+                      }
                     }}
                     className="w-full h-full rounded-full absolute"
                   >
@@ -86,27 +96,42 @@ const Home = () => {
         </ScrollView>
       </View>
 
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <View className="flex-1 justify-center items-center mt-6 opacity-90">
-          <View className="m-5 bg-blue-900 rounded-lg p-9 items-center shadow-lg shadow-black">
-            <Text className="text-white mb-4 text-center">
-              {selectedInstructions}
-            </Text>
-            <View className="flex-row justify-between w-full">
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+      >
+        <View className="flex-1 justify-end">
+          <View className="h-3/4 bg-[#161b2e] rounded-t-3xl p-5 items-center">
+            <View className="w-10 h-1 bg-white/30 rounded-full mb-5" />
+            <ScrollView className="w-full flex-1">
+              <Text className="text-white text-2xl font-bold mb-5 text-center">
+                {selectedRoutine?.title}
+              </Text>
+              <Text className="text-white text-base mb-5 text-center">
+                {selectedInstructions}
+              </Text>
+            </ScrollView>
+            <View className="flex-row justify-between w-full mt-5">
               <TouchableOpacity
-                className="rounded-lg p-2 bg-blue-500 flex-1 mr-2"
-                onPress={() => setModalVisible(!modalVisible)}
+                className="bg-[#0a4d4a] p-4 rounded-lg flex-1 mr-2"
+                onPress={() => setModalVisible(false)}
               >
-                <Text className="text-white font-bold text-center">Close</Text>
+                <Text className="text-white text-center font-bold">Close</Text>
               </TouchableOpacity>
               <TouchableOpacity
-                className="rounded-lg p-2 bg-blue-500 flex-1 ml-2"
+                className="bg-[#0a4d4a] p-4 rounded-lg flex-1 ml-2"
                 onPress={() => {
-                  router.push(`/routines` as any);
-                  setModalVisible(!modalVisible);
+                  if (selectedRoutine) {
+                    router.push({
+                      pathname: `/routines`,
+                      params: { id: selectedRoutine.$id, title: selectedRoutine.title },
+                    });
+                    setModalVisible(false);
+                  }
                 }}
               >
-                <Text className="text-white font-bold text-center">Start</Text>
+                <Text className="text-white text-center font-bold">Start</Text>
               </TouchableOpacity>
             </View>
           </View>

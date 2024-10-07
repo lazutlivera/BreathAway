@@ -58,6 +58,12 @@ const Routines = () => {
     let currentCycle = 0;
     let currentIndex = 0;
 
+    //countDown func
+    //setInstruction(countdown)
+    //setTimeOut
+
+
+
     const runNextInstruction = () => {
       if (currentCycle >= (routine.repeat ?? 1)) {
         setInstruction('Completed');
@@ -109,7 +115,7 @@ const Routines = () => {
     const animatePetals = () => {
       Animated.loop(
         Animated.sequence([
-          Animated.parallel([
+          Animated.parallel([ // initial delay for countdown
             Animated.timing(petalAnim, {
               toValue: 1,
               duration: routine.inhale * 1000,
