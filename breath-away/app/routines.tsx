@@ -1,9 +1,12 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { View, Text, Animated } from "react-native";
 import AppGradient from "../components/AppGradient";
 import { useRoute } from "@react-navigation/native";
-import { getRoutinesById } from "@/lib/appwrite";
+import {
+  getRoutinesById,
+  saveCompletedRoutine,
+  getCurrentUser,
+} from "@/lib/appwrite";
 
 interface Routine {
   inhale: number;
@@ -23,29 +26,37 @@ interface Routine {
   $updatedAt: string;
 }
 
-
 const Routines = () => {
   const [time, setTime] = useState<number>(0);
   const [routine, setRoutine] = useState<Routine | null>(null);
   const [instruction, setInstruction] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   // const [count, setCount] = useState<number>(0)
 
   const route = useRoute();
   const { title, id } = route.params as { title: string; id: string };
 
   useEffect(() => {
+    getCurrentUser()
+      .then((user) => {
+        if (user?.accountId) setCurrentUserId(user.accountId);
+        console.log("Current user ID:", user?.accountId);
+      })
+      .catch((error) => {
+        console.log("Failed to fetch user:", error);
+      });
+
     getRoutinesById(id).then((result) => {
       setRoutine(result.documents[0] as Routine);
       setTime(result.documents[0].inhale * 1000);
       setInstruction("Inhale");
     });
-
-  }, [id])
+  }, [id]);
 
   useEffect(() => {
     if (!routine) return;
-  
+
     const instructions = ["Inhale", "Hold", "Exhale", "Hold"];
     const times = [
       routine.inhale,
@@ -59,29 +70,50 @@ const Routines = () => {
     let currentIndex = 0;
 
     const runNextInstruction = () => {
+      // Check if the current cycle count has reached the routine repeat value
       if (currentCycle >= (routine.repeat ?? 1)) {
-        setInstruction('Completed');
+        setInstruction("Completed");
         setCurrentIndex(0);
-        // setCount(routine.repeat ?? 1);
+
+        // Routine has finished, call saveCompletedRoutine
+        if (currentUserId) {
+          console.log("Routine completed, saving...");
+          saveCompletedRoutine(
+            currentUserId,
+            routine.$id,
+            routine.title,
+            new Date().toISOString()
+          )
+            .then(() => {
+              console.log("Routine successfully saved!");
+            })
+            .catch((error) => {
+              console.log("Failed to save routine:", error);
+            });
+        }
+
         return;
       }
 
+      // Skip instructions with null or undefined times (like Hold)
       while (currentIndex < instructions.length && !times[currentIndex]) {
         currentIndex++;
       }
 
+      // If we've cycled through all the instructions, start a new cycle
       if (currentIndex >= instructions.length) {
         currentCycle++;
         currentIndex = 0;
-        runNextInstruction();
+        runNextInstruction(); // Start the next cycle
         return;
       }
 
+      // Set the current instruction and timing
       setInstruction(instructions[currentIndex]);
       setTime((times[currentIndex] ?? 0) * 1000);
       setCurrentIndex(currentIndex);
-      // setCount(currentCycle);
 
+      // Move to the next instruction after the time has elapsed
       timeoutId = setTimeout(() => {
         currentIndex++;
         runNextInstruction();
@@ -96,7 +128,7 @@ const Routines = () => {
         timeoutId = null;
       }
     };
-  }, [routine]);
+  }, [routine, currentUserId]); // Added currentUserId to dependency array
 
   const petalAnim = useRef(new Animated.Value(0)).current;
   const petalAnim2 = useRef(new Animated.Value(0)).current;
@@ -312,7 +344,6 @@ const Routines = () => {
         <Text className="text-white text-4xl font-bold text-center mb-10">
           {instruction}
         </Text>
-
       </View>
     </AppGradient>
   );
