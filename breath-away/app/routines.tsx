@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from "react";
 import { View, Text, Animated } from "react-native";
 import AppGradient from "../components/AppGradient";
@@ -21,6 +22,7 @@ interface Routine {
   $permissions: [];
   $updatedAt: string;
 }
+
 
 const Routines = () => {
   const [time, setTime] = useState<number>(0);
@@ -310,6 +312,7 @@ const Routines = () => {
         <Text className="text-white text-4xl font-bold text-center mb-10">
           {instruction}
         </Text>
+
       </View>
     </AppGradient>
   );

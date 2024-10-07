@@ -1,18 +1,15 @@
 import { View, Text, TextInput, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import eyeOpen from "../assets/icons/eye.png"
-import eyeClosed from "../assets/icons/eye-hide.png"
+import eyeOpen from "../assets/icons/eye.png";
+import eyeClosed from "../assets/icons/eye-hide.png";
 
-
-
-
-interface FormFieldProps{
-    title: string,
-    value: string,
-    placeholder?: string,
-    handleChangeText:(e:any) => void,
-    otherStyles?: string,
-    keyboardType?: string
+interface FormFieldProps {
+  title: string;
+  value: string;
+  placeholder?: string;
+  handleChangeText: (e: any) => void;
+  otherStyles?: string;
+  keyboardType?: string;
 }
 
 const FormField = ({
