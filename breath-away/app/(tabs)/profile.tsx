@@ -8,13 +8,14 @@ import {
   Switch,
   Animated,
 } from "react-native";
-import { FlatList } from "react-native";
+
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import { getUserCompletedRoutines, signOut } from "@/lib/appwrite";
 import Logout from "../../assets/icons/logout.png";
 import AppGradient from "@/components/AppGradient";
 import profilePictureUrl from "../../assets/images/logo.png";
+import { useNavigation } from "@react-navigation/native";
 
 const Profile = () => {
   const { setUser, setIsLoggedIn, showInstructions, toggleShowInstructions } =
@@ -22,6 +23,8 @@ const Profile = () => {
   const [username, setUsername] = useState<string | null>(null);
   const [completedRoutines, setCompletedRoutines] = useState<any[]>([]);
   const scrollY = new Animated.Value(0);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     getUserCompletedRoutines()
@@ -64,6 +67,10 @@ const Profile = () => {
 
   const handleToggleShowInstructions = (value: boolean) => {
     toggleShowInstructions(value);
+  };
+
+  const handleRedirectToHome = () => {
+    router.push("/home");
   };
 
   return (
@@ -111,7 +118,22 @@ const Profile = () => {
           </Text>
           <View style={{ flex: 1 }}>
             {completedRoutines.length === 0 ? (
-              <Text>No routines found.</Text>
+              <>
+                <Text>Select your first routine.</Text>
+                <TouchableOpacity
+                  onPress={handleRedirectToHome}
+                  style={{
+                    marginTop: 20,
+                    backgroundColor: "#4CAF50",
+                    padding: 10,
+                    borderRadius: 5,
+                  }}
+                >
+                  <Text style={{ color: "#fff", fontSize: 16 }}>
+                    Go to Homepage
+                  </Text>
+                </TouchableOpacity>
+              </>
             ) : (
               <Animated.FlatList
                 data={completedRoutines}
@@ -143,7 +165,7 @@ const Profile = () => {
                     ).toLocaleDateString()}`}</Text>
                   </TouchableOpacity>
                 )}
-                contentContainerStyle={{ paddingBottom: 20 }}
+                contentContainerStyle={{ paddingBottom: 10 }}
               />
             )}
           </View>
