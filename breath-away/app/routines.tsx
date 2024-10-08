@@ -32,7 +32,6 @@ const Routines = () => {
   const [instruction, setInstruction] = useState<string>("");
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  // const [count, setCount] = useState<number>(0)
 
   const route = useRoute();
   const { title, id } = route.params as { title: string; id: string };
@@ -54,6 +53,24 @@ const Routines = () => {
     });
   }, [id]);
 
+  const saveRoutineCompletion = () => {
+    if (currentUserId && routine) {
+      console.log("Routine completed, saving...");
+      saveCompletedRoutine(
+        currentUserId,
+        routine.$id,
+        routine.title,
+        new Date().toISOString()
+      )
+        .then(() => {
+          console.log("Routine successfully saved!");
+        })
+        .catch((error) => {
+          console.log("Failed to save routine:", error);
+        });
+    }
+  };
+
   useEffect(() => {
     if (!routine) return;
 
@@ -69,33 +86,12 @@ const Routines = () => {
     let currentCycle = 0;
     let currentIndex = 0;
 
-    //countDown func
-    //setInstruction(countdown)
-    //setTimeOut
-
-
-
     const runNextInstruction = () => {
       if (currentCycle >= (routine.repeat ?? 1)) {
         setInstruction("Completed");
         setCurrentIndex(0);
 
-        if (currentUserId) {
-          console.log("Routine completed, saving...");
-          saveCompletedRoutine(
-            currentUserId,
-            routine.$id,
-            routine.title,
-            new Date().toISOString()
-          )
-            .then(() => {
-              console.log("Routine successfully saved!");
-            })
-            .catch((error) => {
-              console.log("Failed to save routine:", error);
-            });
-        }
-
+        saveRoutineCompletion();
         return;
       }
 
@@ -128,7 +124,8 @@ const Routines = () => {
         timeoutId = null;
       }
     };
-  }, [routine, currentUserId]);
+  }, [routine]);
+
   const petalAnim = useRef(new Animated.Value(0)).current;
   const petalAnim2 = useRef(new Animated.Value(0)).current;
   const petalAnim3 = useRef(new Animated.Value(0)).current;
@@ -137,10 +134,11 @@ const Routines = () => {
 
   useEffect(() => {
     if (!routine) return;
+
     const animatePetals = () => {
       Animated.loop(
         Animated.sequence([
-          Animated.parallel([ // initial delay for countdown
+          Animated.parallel([
             Animated.timing(petalAnim, {
               toValue: 1,
               duration: routine.inhale * 1000,
@@ -203,13 +201,13 @@ const Routines = () => {
         }
       ).start();
     };
+
     animatePetals();
   }, [routine]);
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
       <View className="flex-1 justify-center items-center">
-        {/* Petal 1 */}
         <Animated.View
           className={
             instruction === "Hold"
@@ -234,8 +232,6 @@ const Routines = () => {
             ],
           }}
         />
-
-        {/* Petal 2 */}
         <Animated.View
           className={
             instruction === "Hold"
@@ -260,8 +256,6 @@ const Routines = () => {
             ],
           }}
         />
-
-        {/* Petal 3 */}
         <Animated.View
           className={
             instruction === "Hold"
@@ -286,8 +280,6 @@ const Routines = () => {
             ],
           }}
         />
-
-        {/* Petal 4 */}
         <Animated.View
           className={
             instruction === "Hold"
@@ -312,8 +304,6 @@ const Routines = () => {
             ],
           }}
         />
-
-        {/* Petal 5 */}
         <Animated.View
           className={
             instruction === "Hold"
