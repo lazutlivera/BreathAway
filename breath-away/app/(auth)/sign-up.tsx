@@ -4,7 +4,7 @@ import { Link, router } from "expo-router";
 import Logo from "../../assets/images/logo.png";
 import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
-import { createUser } from "@/lib/appwrite";
+import AppwriteService from "@/lib/appwrite";
 import AppGradient from "@/components/AppGradient";
 
 const SignUp = () => {
@@ -23,7 +23,11 @@ const SignUp = () => {
     setIsSubmitting(true);
 
     try {
-      const result = await createUser(form.email, form.password, form.username);
+      const result = await AppwriteService.createUser(
+        form.email,
+        form.password,
+        form.username
+      );
       router.replace("/welcome");
     } catch (error: any) {
       Alert.alert("Oops!", error.message);

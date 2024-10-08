@@ -5,8 +5,8 @@ import FormField from "../../components/FormField";
 import CustomButton from "../../components/CustomButton";
 import AppGradient from "@/components/AppGradient";
 import Logo from "../../assets/images/logo.png";
-import { signIn, getCurrentUser } from "../../lib/appwrite";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import AppwriteService from "@/lib/appwrite";
 
 interface User {
   id: string;
@@ -36,8 +36,8 @@ function SignIn() {
     setIsSubmitting(true);
 
     try {
-      await signIn(form.email, form.password);
-      const result = await getCurrentUser();
+      await AppwriteService.signIn(form.email, form.password);
+      const result = await AppwriteService.getCurrentUser();
       const user: User | null = transformDocumentToUser(result);
 
       if (user) {
