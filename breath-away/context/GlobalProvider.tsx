@@ -5,7 +5,7 @@ import React, {
   ReactNode,
   useContext,
 } from "react";
-import { getCurrentUser } from "../lib/appwrite";
+import AppwriteService from "../lib/appwrite";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface User {
@@ -46,7 +46,7 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
   const [showInstructions, setShowInstructions] = useState(false);
 
   useEffect(() => {
-    getCurrentUser()
+    AppwriteService.getCurrentUser()
       .then((res: any) => {
         if (res) {
           setIsLoggedIn(true);

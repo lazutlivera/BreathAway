@@ -1,7 +1,7 @@
 import { Text, View, ViewToken } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import AppGradient from "@/components/AppGradient";
-import { getRoutines } from "../../lib/appwrite";
+import AppwriteService from "@/lib/appwrite";
 import Animated, {
   useAnimatedScrollHandler,
   useSharedValue,
@@ -14,7 +14,7 @@ const Home = () => {
   const [paginationIndex, setPaginationIndex] = useState(0);
 
   useEffect(() => {
-    getRoutines().then((result: any) => {
+    AppwriteService.getRoutines().then((result: any) => {
       setRoutines(result.documents);
     });
   }, []);
