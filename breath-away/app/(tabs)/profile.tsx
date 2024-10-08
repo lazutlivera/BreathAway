@@ -1,13 +1,14 @@
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   Image,
-  ScrollView,
   Alert,
   Switch,
+  Animated,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import { FlatList } from "react-native";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import { getUserCompletedRoutines, signOut } from "@/lib/appwrite";
@@ -20,6 +21,7 @@ const Profile = () => {
     useGlobalContext();
   const [username, setUsername] = useState<string | null>(null);
   const [completedRoutines, setCompletedRoutines] = useState<any[]>([]);
+  const scrollY = new Animated.Value(0);
 
   useEffect(() => {
     getUserCompletedRoutines()
@@ -107,32 +109,48 @@ const Profile = () => {
           <Text className="text-white text-lg font-semibold mb-2 text-center">
             Recently Completed Routines
           </Text>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ paddingBottom: 20 }}
-          >
-            <View className="flex-col pl-8">
-              {completedRoutines.length > 0 ? (
-                completedRoutines.map((routine, index) => (
-                  <TouchableOpacity
-                    key={index}
-                    onPress={() => handleRoutinePress(routine.routineName)}
-                    className="bg-gray-700 w-11/12 h-24 rounded-lg mb-2 justify-center items-center shadow-md active:opacity-70"
-                  >
-                    <Text className="text-white">{routine.routineName}</Text>
-                    <Text className="text-gray-400">
-                      Completed on{" "}
-                      {new Date(routine.completionDate).toLocaleDateString()}
-                    </Text>
-                  </TouchableOpacity>
-                ))
-              ) : (
-                <Text className="text-gray-400 text-center mt-10">
-                  No routines completed yet.
-                </Text>
-              )}
-            </View>
-          </ScrollView>
+          <Animated.FlatList
+            data={completedRoutines}
+            keyExtractor={(item, index) => index.toString()}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: true }
+            )}
+            scrollEventThrottle={16}
+            renderItem={({ item, index }) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleRoutinePress(item.routineName)}
+                style={{
+                  backgroundColor: "#ccc",
+                  margin: 10,
+                  padding: 20,
+                  borderRadius: 10,
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.22,
+                  shadowRadius: 2.22,
+                  elevation: 3,
+                  transform: [
+                    {
+                      translateY: scrollY.interpolate({
+                        inputRange: [-1, 0, 1],
+                        outputRange: [0, 0, 1],
+                      }),
+                    },
+                  ],
+                }}
+              >
+                <Text>{item.routineName}</Text>
+                <Text>{`Completed on ${new Date(
+                  item.completionDate
+                ).toLocaleDateString()}`}</Text>
+              </TouchableOpacity>
+            )}
+          />
         </View>
       </View>
     </AppGradient>
