@@ -97,7 +97,7 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
             <Text className="text-white text-2xl font-semibold tracking-wider">
               {item.title}
             </Text>
-            <Text className="text-white text-sm font-medium tracking-wide p-5">
+            <Text className="text-white text-sm font-medium tracking-wide px-8 text-center">
               {item.description}
             </Text>
           </LinearGradient>

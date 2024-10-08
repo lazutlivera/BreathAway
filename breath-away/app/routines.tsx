@@ -21,6 +21,7 @@ interface Routine {
   description: string;
   instructions: string;
   repeat: number;
+  gradient: string[];
   $databaseId: string;
   $permissions: [];
   $updatedAt: string;
@@ -206,7 +207,9 @@ const Routines = () => {
   }, [routine]);
 
   return (
-    <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
+    <AppGradient
+      colors={routine ? routine.gradient : ["#161b2e", "#0a4d4a", "#766e67"]}
+    >
       <View className="flex-1 justify-center items-center">
         <Animated.View
           className={
