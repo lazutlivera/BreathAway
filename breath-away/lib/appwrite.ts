@@ -11,186 +11,178 @@ export const config = {
   completedRoutines: "6703c9a4002e7d5042c6",
 };
 
-export const client = new Client();
+class AppwriteService {
+  private client: Client;
+  private account: Account;
+  private databases: Databases;
 
-client
-  .setEndpoint(config.endpoint)
-  .setProject(config.projectId)
-  .setPlatform(config.platform);
+  constructor() {
+    this.client = new Client();
+    this.client
+      .setEndpoint(config.endpoint)
+      .setProject(config.projectId)
+      .setPlatform(config.platform);
+    this.account = new Account(this.client);
+    this.databases = new Databases(this.client);
+  }
 
-const account = new Account(client);
-const databases = new Databases(client);
 
-export const createUser = async (
-  email: string,
-  password: string,
-  username: string
-) => {
-  try {
-    const newAccount = await account.create(
-      ID.unique(),
-      email,
-      password,
-      username
-    );
-
-    if (!newAccount) throw Error;
-
-    await signIn(email, password);
-    const newUser = await databases.createDocument(
-      config.databaseId,
-      config.userCollectionId,
-      ID.unique(),
-      {
-        accountId: newAccount.$id,
+  async createUser(email: string, password: string, username: string) {
+    try {
+      const newAccount = await this.account.create(
+        ID.unique(),
         email,
-        username,
-      }
-    );
+        password,
+        username
+      );
 
-    return newUser;
-  } catch (error: any) {
-    console.log(error);
-    throw new Error(error);
+      if (!newAccount) throw Error;
+
+      await this.signIn(email, password);
+      const newUser = await this.databases.createDocument(
+        config.databaseId,
+        config.userCollectionId,
+        ID.unique(),
+        {
+          accountId: newAccount.$id,
+          email,
+          username,
+        }
+      );
+
+      return newUser;
+    } catch (error: any) {
+      console.log(error);
+      throw new Error(error);
+    }
   }
-};
 
-export const signIn = async (email: string, password: string) => {
-  try {
-    const session = await account.createEmailPasswordSession(email, password);
+  async signIn(email: string, password: string) {
+    try {
+      const session = await this.account.createEmailPasswordSession(email, password);
 
-    return session;
-  } catch (error: any) {
-    throw new Error(error);
+      return session;
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
-};
 
-export const getCurrentUser = async () => {
-  try {
-    const currentAccount = await account.get();
+  async getCurrentUser() {
+    try {
+      const currentAccount = await this.account.get();
 
-    if (!currentAccount) throw Error;
+      if (!currentAccount) throw Error;
 
-    const currentUser = await databases.listDocuments(
-      config.databaseId,
-      config.userCollectionId,
-      [Query.equal("accountId", currentAccount.$id)]
-    );
+      const currentUser = await this.databases.listDocuments(
+        config.databaseId,
+        config.userCollectionId,
+        [Query.equal("accountId", currentAccount.$id)]
+      );
 
-    if (!currentUser) throw Error;
+      if (!currentUser) throw Error;
 
-    return currentUser.documents[0];
-  } catch (error: any) {
-    console.log(error);
+      return currentUser.documents[0];
+    } catch (error: any) {
+      console.log(error);
+    }
   }
-};
 
-export async function signOut() {
-  try {
-    const session = await account.deleteSession("current");
+  async signOut() {
+    try {
+      const session = await this.account.deleteSession("current");
 
-    return session;
-  } catch (error: any) {
-    throw new Error(error);
+      return session;
+    } catch (error: any) {
+      throw new Error(error);
+    }
   }
-}
 
-// export interface Routine {
-//   title: string;
-//   img: string;
-//   instructions: string;
-//   description: string,
+  async getRoutines() {
+    try {
+      const result = await this.databases.listDocuments(
+        config.databaseId,
+        config.routinesCollectionId
+      );
 
-// }
-
-export const getRoutines = async () => {
-  try {
-    const result = await databases.listDocuments(
-      config.databaseId,
-      config.routinesCollectionId
-    );
-
-    return result;
-  } catch (error) {
-    throw new Error();
+      return result;
+    } catch (error) {
+      throw new Error();
+    }
   }
-};
 
-export const getRoutinesById = async (id: string) => {
-  try {
-    const result = await databases.listDocuments(
-      config.databaseId,
-      config.routinesCollectionId,
-      [Query.equal("$id", [id])]
-    );
+  async getRoutinesById(id: string) {
+    try {
+      const result = await this.databases.listDocuments(
+        config.databaseId,
+        config.routinesCollectionId,
+        [Query.equal("$id", [id])]
+      );
 
-    return result;
-  } catch (error) {
-    throw new Error();
+      return result;
+    } catch (error) {
+      throw new Error();
+    }
   }
-};
 
-export const saveCompletedRoutine = async (
-  userId: string,
-  routineId: string,
-  routineName: string,
-  completionDate: string
-) => {
-  try {
-    console.log("Saving completed routine with params:", {
-      userId,
-      routineId,
-      routineName,
-      completionDate,
-    });
-    const result = await databases.createDocument(
-      config.databaseId,
-      config.completedRoutines,
-      ID.unique(),
-      {
+  async saveCompletedRoutine(userId: string, routineId: string, routineName: string, completionDate: string) {
+    try {
+      console.log("Saving completed routine with params:", {
         userId,
         routineId,
         routineName,
         completionDate,
-      }
-    );
-    return result;
-  } catch (error: any) {
-    console.log("Error saving completed routine:", error);
-    throw new Error(error);
+      });
+      const result = await this.databases.createDocument(
+        config.databaseId,
+        config.completedRoutines,
+        ID.unique(),
+        {
+          userId,
+          routineId,
+          routineName,
+          completionDate,
+        }
+      );
+      return result;
+    } catch (error: any) {
+      console.log("Error saving completed routine:", error);
+      throw new Error(error);
+    }
   }
-};
 
-export const getUserCompletedRoutines = async () => {
-  try {
-    const currentAccount = await account.get();
+  async getUserCompletedRoutines() {
+    try {
+      const currentAccount = await this.account.get();
 
-    if (!currentAccount) throw new Error("No account found");
+      if (!currentAccount) throw new Error("No account found");
 
-    const currentUser = await databases.listDocuments(
-      config.databaseId,
-      config.userCollectionId,
-      [Query.equal("accountId", currentAccount.$id)]
-    );
+      const currentUser = await this.databases.listDocuments(
+        config.databaseId,
+        config.userCollectionId,
+        [Query.equal("accountId", currentAccount.$id)]
+      );
 
-    if (!currentUser.documents.length) throw new Error("No user found");
+      if (!currentUser.documents.length) throw new Error("No user found");
 
-    const user = currentUser.documents[0];
+      const user = currentUser.documents[0];
 
-    const completedRoutinesResult = await databases.listDocuments(
-      config.databaseId,
-      config.completedRoutines,
-      [Query.equal("userId", user.accountId)]
-    );
+      const completedRoutinesResult = await this.databases.listDocuments(
+        config.databaseId,
+        config.completedRoutines,
+        [Query.equal("userId", user.accountId)]
+      );
 
-    console.log("User's completed routines:", completedRoutinesResult);
+      console.log("User's completed routines:", completedRoutinesResult);
 
-    return {
-      user,
-      completedRoutines: completedRoutinesResult.documents,
-    };
-  } catch (error: any) {
-    console.log("Error fetching user and completed routines:", error);
-    throw new Error(error);
+      return {
+        user,
+        completedRoutines: completedRoutinesResult.documents,
+      };
+    } catch (error: any) {
+      console.log("Error fetching user and completed routines:", error);
+      throw new Error(error);
+    }
   }
-};
+}
+
+export default new AppwriteService();

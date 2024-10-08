@@ -11,7 +11,7 @@ import {
 import { FlatList } from "react-native";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
-import { getUserCompletedRoutines, signOut } from "@/lib/appwrite";
+import AppwriteService from "@/lib/appwrite";
 import Logout from "../../assets/icons/logout.png";
 import AppGradient from "@/components/AppGradient";
 import profilePictureUrl from "../../assets/images/logo.png";
@@ -24,7 +24,7 @@ const Profile = () => {
   const scrollY = new Animated.Value(0);
 
   useEffect(() => {
-    getUserCompletedRoutines()
+    AppwriteService.getUserCompletedRoutines()
       .then((result) => {
         setUsername(result.user.username);
         setCompletedRoutines(result.completedRoutines);
@@ -33,7 +33,7 @@ const Profile = () => {
   }, []);
 
   const logout = async () => {
-    await signOut();
+    await AppwriteService.signOut();
     setUser(null);
     setIsLoggedIn(false);
     router.replace("/sign-in");
