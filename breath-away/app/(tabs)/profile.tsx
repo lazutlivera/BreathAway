@@ -109,48 +109,44 @@ const Profile = () => {
           <Text className="text-white text-lg font-semibold mb-2 text-center">
             Recently Completed Routines
           </Text>
-          <Animated.FlatList
-            data={completedRoutines}
-            keyExtractor={(item, index) => index.toString()}
-            onScroll={Animated.event(
-              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-              { useNativeDriver: true }
+          <View style={{ flex: 1 }}>
+            {completedRoutines.length === 0 ? (
+              <Text>No routines found.</Text>
+            ) : (
+              <Animated.FlatList
+                data={completedRoutines}
+                keyExtractor={(item, index) => index.toString()}
+                onScroll={Animated.event(
+                  [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                  { useNativeDriver: true }
+                )}
+                scrollEventThrottle={16}
+                renderItem={({ item, index }) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => handleRoutinePress(item.routineName)}
+                    style={{
+                      backgroundColor: "#ccc",
+                      margin: 10,
+                      padding: 20,
+                      borderRadius: 10,
+                      shadowColor: "#000",
+                      shadowOffset: { width: 0, height: 1 },
+                      shadowOpacity: 0.22,
+                      shadowRadius: 2.22,
+                      elevation: 3,
+                    }}
+                  >
+                    <Text>{item.routineName}</Text>
+                    <Text>{`Completed on ${new Date(
+                      item.completionDate
+                    ).toLocaleDateString()}`}</Text>
+                  </TouchableOpacity>
+                )}
+                contentContainerStyle={{ paddingBottom: 20 }}
+              />
             )}
-            scrollEventThrottle={16}
-            renderItem={({ item, index }) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleRoutinePress(item.routineName)}
-                style={{
-                  backgroundColor: "#ccc",
-                  margin: 10,
-                  padding: 20,
-                  borderRadius: 10,
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.22,
-                  shadowRadius: 2.22,
-                  elevation: 3,
-                  transform: [
-                    {
-                      translateY: scrollY.interpolate({
-                        inputRange: [-1, 0, 1],
-                        outputRange: [0, 0, 1],
-                      }),
-                    },
-                  ],
-                }}
-              >
-                <Text>{item.routineName}</Text>
-                <Text>{`Completed on ${new Date(
-                  item.completionDate
-                ).toLocaleDateString()}`}</Text>
-              </TouchableOpacity>
-            )}
-          />
+          </View>
         </View>
       </View>
     </AppGradient>

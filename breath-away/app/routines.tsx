@@ -52,10 +52,28 @@ const Routines = () => {
       setTime(result.documents[0].inhale * 1000);
       setInstruction("Inhale");
     });
+
+    const saveRoutineCompletion = () => {
+      if (currentUserId && routine) {
+        console.log("Routine completed, saving...");
+        saveCompletedRoutine(
+          currentUserId,
+          routine.$id,
+          routine.title,
+          new Date().toISOString()
+        )
+          .then(() => {
+            console.log("Routine successfully saved!");
+          })
+          .catch((error) => {
+            console.log("Failed to save routine:", error);
+          });
+      }
+    };
   }, [id]);
 
   const saveRoutineCompletion = () => {
-    if (currentUserId && routine) {
+    if (currentUserId) {
       console.log("Routine completed, saving...");
       saveCompletedRoutine(
         currentUserId,
@@ -125,7 +143,7 @@ const Routines = () => {
         timeoutId = null;
       }
     };
-  }, [routine]);
+  }, [routine, currentUserId]);
 
   const petalAnim = useRef(new Animated.Value(0)).current;
   const petalAnim2 = useRef(new Animated.Value(0)).current;
