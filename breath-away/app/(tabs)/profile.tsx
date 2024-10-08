@@ -16,7 +16,8 @@ import AppGradient from "@/components/AppGradient";
 import profilePictureUrl from "../../assets/images/logo.png";
 
 const Profile = () => {
-  const { setUser, setIsLoggedIn, showInstructions, toggleShowInstructions } = useGlobalContext();
+  const { setUser, setIsLoggedIn, showInstructions, toggleShowInstructions } =
+    useGlobalContext();
   const [username, setUsername] = useState<string | null>(null);
   const [completedRoutines, setCompletedRoutines] = useState<any[]>([]);
 
@@ -66,7 +67,6 @@ const Profile = () => {
   return (
     <AppGradient colors={["#161B2E", "#0A4D4A", "#766E67"]}>
       <View className="flex-1 justify-between">
-        {/* Header Section */}
         <View className="flex flex-row items-end px-4 mt-4">
           <TouchableOpacity
             onPress={confirmLogout}
@@ -76,8 +76,6 @@ const Profile = () => {
             <Text className="text-white ml-2">Logout</Text>
           </TouchableOpacity>
         </View>
-
-        {/* Add this before the Recently Completed Routines Section */}
         <View className="flex-row justify-between items-center px-4 mt-4">
           <Text className="text-white text-lg">Show Instructions</Text>
           <Switch
@@ -85,8 +83,6 @@ const Profile = () => {
             onValueChange={handleToggleShowInstructions}
           />
         </View>
-
-        {/* Profile Section */}
         <View className="items-center mt-5">
           <Image
             source={profilePictureUrl}
@@ -94,8 +90,6 @@ const Profile = () => {
             resizeMode="cover"
           />
           <Text className="text-white text-2xl">{username}</Text>
-
-          {/* Stats Section */}
           <View className="flex-row justify-around w-full mt-4">
             <View className="items-center">
               <Text className="text-white text-xl">
@@ -109,8 +103,6 @@ const Profile = () => {
             </View>
           </View>
         </View>
-
-        {/* Recently Completed Routines Section */}
         <View className="mt-6 w-full flex-1 align-items-center">
           <Text className="text-white text-lg font-semibold mb-2 text-center">
             Recently Completed Routines
@@ -120,7 +112,6 @@ const Profile = () => {
             contentContainerStyle={{ paddingBottom: 20 }}
           >
             <View className="flex-col pl-8">
-              {/* Render completed routines dynamically */}
               {completedRoutines.length > 0 ? (
                 completedRoutines.map((routine, index) => (
                   <TouchableOpacity
