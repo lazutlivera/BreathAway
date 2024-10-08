@@ -10,18 +10,23 @@ type Props = {
 
 const Pagination = ({ items, paginationIndex, scrollX }: Props) => {
   return (
-    <View className="flex-row h-[60px] justify-center items-center">
-      {items.map((_: any, index: React.Key | null | undefined) => {
-        return (
-          <View
-            key={index}
-            style={[
-              styles.dot,
-              { backgroundColor: paginationIndex === index ? "#222" : "#aaa" },
-            ]}
-          ></View>
-        );
-      })}
+    <View className="flex-row justify-center items-center">
+      {items
+        ? items.map((_: any, index: React.Key | null | undefined) => {
+            return (
+              <View
+                key={index}
+                style={[
+                  styles.dot,
+                  {
+                    backgroundColor:
+                      paginationIndex === index ? "#222" : "#aaa",
+                  },
+                ]}
+              ></View>
+            );
+          })
+        : null}
     </View>
   );
 };

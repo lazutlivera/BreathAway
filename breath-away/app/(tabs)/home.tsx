@@ -11,11 +11,13 @@ import RoutineCard from "@/components/RoutineCard";
 
 const Home = () => {
   const [routines, setRoutines] = useState<any[]>([]);
+  const [data, setData] = useState<any[]>([]);
   const [paginationIndex, setPaginationIndex] = useState(0);
 
   useEffect(() => {
     getRoutines().then((result: any) => {
       setRoutines(result.documents);
+      setData(result.documents);
     });
   }, []);
 
@@ -36,7 +38,7 @@ const Home = () => {
       viewableItems[0].index !== undefined &&
       viewableItems[0].index !== null
     ) {
-      setPaginationIndex(viewableItems[0].index);
+      setPaginationIndex(viewableItems[0].index % 4);
     }
   };
 
@@ -53,17 +55,23 @@ const Home = () => {
       <View className="flex justify-center items-center p-16">
         <Text className="text-white text-lg">Select a routine to begin</Text>
       </View>
-      <Animated.FlatList
-        data={routines}
-        renderItem={({ item, index }) => (
-          <RoutineCard item={item} index={index} scrollX={scrollX} />
-        )}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        pagingEnabled
-        onScroll={onScrollHandler}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-      />
+      {routines ? (
+        <Animated.FlatList
+          data={data}
+          renderItem={({ item, index }) => (
+            <RoutineCard item={item} index={index} scrollX={scrollX} />
+          )}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          pagingEnabled
+          onScroll={onScrollHandler}
+          viewabilityConfigCallbackPairs={
+            viewabilityConfigCallbackPairs.current
+          }
+          onEndReached={() => setData([...data, ...routines])}
+          onEndReachedThreshold={0.5}
+        />
+      ) : null}
       <Pagination
         items={routines}
         scrollX={scrollX}
