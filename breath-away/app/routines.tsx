@@ -52,24 +52,6 @@ const Routines = () => {
       setTime(result.documents[0].inhale * 1000);
       setInstruction("Inhale");
     });
-
-    const saveRoutineCompletion = () => {
-      if (currentUserId && routine) {
-        console.log("Routine completed, saving...");
-        saveCompletedRoutine(
-          currentUserId,
-          routine.$id,
-          routine.title,
-          new Date().toISOString()
-        )
-          .then(() => {
-            console.log("Routine successfully saved!");
-          })
-          .catch((error) => {
-            console.log("Failed to save routine:", error);
-          });
-      }
-    };
   }, [id]);
 
   const saveRoutineCompletion = () => {
