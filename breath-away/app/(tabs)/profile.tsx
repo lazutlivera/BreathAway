@@ -16,26 +16,31 @@ import { getUserCompletedRoutines, signOut } from "@/lib/appwrite";
 import Logout from "../../assets/icons/logout.png";
 import AppGradient from "@/components/AppGradient";
 import profilePictureUrl from "../../assets/images/logo.png";
-import { useNavigation } from "@react-navigation/native";
+
+const gradients = [
+  ["#1e3c72", "#2a5298"],
+  ["#ff7e5f", "#feb47b"],
+  ["#6a11cb", "#2575fc"],
+  ["#00c6ff", "#0072ff"],
+];
 
 const Profile = () => {
   const { setUser, setIsLoggedIn, showInstructions, toggleShowInstructions } =
     useGlobalContext();
   const [username, setUsername] = useState<string | null>(null);
   const [completedRoutines, setCompletedRoutines] = useState<any[]>([]);
-  const [badges, setBadges] = useState<string[]>([]); // Array to hold collected badges
-  const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
+  const [badges, setBadges] = useState<string[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [bgModalVisible, setBgModalVisible] = useState(false);
+  const [selectedGradient, setSelectedGradient] = useState(0);
   const scrollY = new Animated.Value(0);
 
-  const navigation = useNavigation();
-
   useEffect(() => {
-    // Fetch user data and badges (assuming you have badges logic)
     getUserCompletedRoutines()
       .then((result) => {
         setUsername(result.user.username);
         setCompletedRoutines(result.completedRoutines);
-        setBadges(result.user.badges || []); // Assuming badges are part of the user object
+        setBadges(result.user.badges || []);
       })
       .catch((err) => console.log("Failed to fetch data:", err));
   }, []);
@@ -72,42 +77,65 @@ const Profile = () => {
 
   const handleToggleShowInstructions = (value: boolean) => {
     toggleShowInstructions(value);
+    setBgModalVisible(false);
   };
 
   const handleRedirectToHome = () => {
     router.push("/home");
   };
 
-  // Function to open the modal when the badges text is pressed
   const handleShowBadges = () => {
     setModalVisible(true);
   };
 
-  // Function to close the modal
   const handleCloseModal = () => {
     setModalVisible(false);
   };
 
+  // Handle opening background gradient selector
+  const handleOpenBgModal = () => {
+    setBgModalVisible(true);
+  };
+
+  const handleCloseBgModal = () => {
+    setBgModalVisible(false);
+  };
+
+  const handleGradientSelect = (index: number) => {
+    setSelectedGradient(index);
+    handleCloseBgModal();
+  };
+
   return (
-    <AppGradient colors={["#1e3c72", "#2a5298", "#2c6bff"]}>
+    <AppGradient colors={gradients[selectedGradient]}>
       <View className="flex-1 justify-between">
-        {/* Header section with logout and switch */}
-        <View className="flex-row justify-between items-center px-4 mt-4">
-          <View className="flex-row items-center">
-            <Switch
-              value={showInstructions}
-              onValueChange={handleToggleShowInstructions}
-              className="mr-2"
-            />
-            <Text className="text-white text-lg">Show Instructions</Text>
+        <View className="px-4 mt-4 space-y-4">
+          <View className="flex-row items-center justify-between">
+            <View className="flex-row items-center">
+              <Switch
+                value={showInstructions}
+                onValueChange={handleToggleShowInstructions}
+                className="mr-2"
+              />
+              <Text className="text-white text-lg">Show Instructions</Text>
+            </View>
+
+            <TouchableOpacity
+              onPress={confirmLogout}
+              className="bg-red-600 rounded-lg px-4 py-2 flex flex-row items-center justify-center"
+            >
+              <Image source={Logout} resizeMode="contain" className="w-4 h-4" />
+              <Text className="text-white ml-2 text-sm">Logout</Text>
+            </TouchableOpacity>
           </View>
 
           <TouchableOpacity
-            onPress={confirmLogout}
-            className="bg-red-600 rounded-lg px-3 py-2 flex flex-row items-center"
+            onPress={handleOpenBgModal}
+            className="bg-white rounded-lg px-4 py-2 flex flex-row items-center justify-center"
           >
-            <Image source={Logout} resizeMode="contain" className="w-4 h-3" />
-            <Text className="text-white ml-2 text-sm">Logout</Text>
+            <Text className="text-black text-sm font-medium">
+              Change Background
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -117,17 +145,6 @@ const Profile = () => {
             source={profilePictureUrl}
             className="w-32 h-32 rounded-full mb-1"
             resizeMode="cover"
-            style={{
-              transform: [
-                {
-                  scale: scrollY.interpolate({
-                    inputRange: [0, 150],
-                    outputRange: [1, 0.8],
-                    extrapolate: "clamp",
-                  }),
-                },
-              ],
-            }}
           />
           <Text className="text-white text-2xl font-bold">{username}</Text>
           <View className="flex-row justify-around w-full mt-4">
@@ -137,7 +154,6 @@ const Profile = () => {
               </Text>
               <Text className="text-gray-400">Routines Completed</Text>
             </View>
-            {/* Touchable Badges Text */}
             <TouchableOpacity
               onPress={handleShowBadges}
               className="items-center cursor-pointer"
@@ -206,9 +222,9 @@ const Profile = () => {
                 )}
                 contentContainerStyle={{
                   paddingBottom: 10,
-                  paddingHorizontal: 4, // Ensure content is full-width
+                  paddingHorizontal: 4,
                 }}
-                style={{ width: "100%" }} // Ensure list takes full width
+                style={{ width: "100%" }}
               />
             )}
           </View>
@@ -238,6 +254,42 @@ const Profile = () => {
             )}
             <TouchableOpacity
               onPress={handleCloseModal}
+              className="mt-4 bg-red-600 px-4 py-2 rounded-lg"
+            >
+              <Text className="text-white text-center">Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal
+        visible={bgModalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={handleCloseBgModal}
+      >
+        <View className="flex-1 justify-center items-center bg-black bg-opacity-50">
+          <View className="bg-white p-6 rounded-lg w-3/4">
+            <Text className="text-xl font-semibold mb-4">
+              Choose Background
+            </Text>
+            {gradients.map((gradient, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => handleGradientSelect(index)}
+                className="p-2 mb-2"
+                style={{
+                  backgroundColor: `linear-gradient(${gradient[0]}, ${gradient[1]})`,
+                  borderRadius: 5,
+                }}
+              >
+                <Text className="text-gray-700 text-lg">
+                  Gradient {index + 1}
+                </Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              onPress={handleCloseBgModal}
               className="mt-4 bg-red-600 px-4 py-2 rounded-lg"
             >
               <Text className="text-white text-center">Close</Text>
