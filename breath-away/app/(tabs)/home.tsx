@@ -1,4 +1,4 @@
-import { Text, View, ViewToken } from "react-native";
+import { Text, TouchableOpacity, View, ViewToken } from "react-native";
 import React, { useEffect, useState, useRef } from "react";
 import AppGradient from "@/components/AppGradient";
 import AppwriteService from "@/lib/appwrite";
@@ -16,6 +16,7 @@ const Home = () => {
   const [routines, setRoutines] = useState<any[]>([]);
   const [data, setData] = useState<any[]>([]);
   const [paginationIndex, setPaginationIndex] = useState(0);
+  const [showInfo, setShowInfo] = useState<Boolean>(false);
 
   useEffect(() => {
     AppwriteService.getRoutines().then((result: any) => {
@@ -38,7 +39,10 @@ const Home = () => {
   }: {
     viewableItems: ViewToken[];
   }) => {
-    if (viewableItems[0]?.index !== undefined) {
+    if (
+      viewableItems[0]?.index !== undefined &&
+      viewableItems[0]?.index !== null
+    ) {
       setPaginationIndex(viewableItems[0].index % 4);
     }
   };
@@ -51,18 +55,32 @@ const Home = () => {
     { viewabilityConfig, onViewableItemsChanged },
   ]);
 
+  const handleInfoToggle = () => {
+    setShowInfo((prevShowInfo) => !prevShowInfo);
+  };
+
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
-      <View className="flex-row items-center">
+      <View className="flex-row items-center mt-1">
         <Switch
           value={showInstructions}
           onValueChange={toggleShowInstructions}
-          className="mr-2"
+          className="mr-2 p-1"
         />
-        <Entypo name="info" size={20} color="white" />
+        <TouchableOpacity
+          className="flex-row items-center justify-between"
+          onPress={handleInfoToggle}
+        >
+          <Entypo name="info" size={20} color="white" />
+          {showInfo && (
+            <Text className="text-white p-2 font-light">
+              Display Routine Instructions
+            </Text>
+          )}
+        </TouchableOpacity>
       </View>
 
-      <View className="flex justify-center items-center p-16">
+      <View className="flex justify-center items-center p-12">
         <Text className="text-white text-lg font-light">
           Choose your state of mind
         </Text>

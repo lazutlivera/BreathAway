@@ -42,7 +42,9 @@ const Profile = () => {
         setCompletedRoutines(result.completedRoutines);
         setBadges(result.user.badges || []);
       })
-      .catch((err) => console.log("Failed to fetch data:", err));
+      .catch((error) => {
+        throw new Error(error);
+      });
   }, []);
 
   const logout = async () => {
@@ -59,8 +61,9 @@ const Profile = () => {
       [
         {
           text: "No",
-          onPress: () => console.log("Logout Cancelled"),
-          style: "cancel",
+          onPress: () => {
+            style: "cancel";
+          },
         },
         {
           text: "Yes",
@@ -116,23 +119,27 @@ const Profile = () => {
               className="bg-red-600 rounded-lg px-4 py-2 flex flex-row items-center justify-center"
             >
               <Image source={Logout} resizeMode="contain" className="w-4 h-4" />
-              <Text className="text-white ml-2 text-sm">Logout</Text>
+              <Text className="text-white ml-2 text-sm font-light">Logout</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View className="items-center mt-5">
           <Animated.Image
             source={profilePictureUrl}
-            className="w-32 h-32 rounded-full mb-1"
+            className="w-32 h-32 rounded-full"
             resizeMode="cover"
           />
-          <Text className="text-white text-2xl font-bold">{username}</Text>
+          <Text className="text-white text-3xl font-semibold mb-5">
+            {username}
+          </Text>
           <View className="flex-row justify-around w-full mt-4">
             <View className="items-center">
               <Text className="text-white text-xl font-semibold">
                 {completedRoutines.length}
               </Text>
-              <Text className="text-gray-400">Routines Completed</Text>
+              <Text className="text-gray-200 font-light">
+                Routines Completed
+              </Text>
             </View>
             <TouchableOpacity
               onPress={handleShowBadges}
@@ -141,13 +148,15 @@ const Profile = () => {
               <Text className="text-white text-xl font-semibold">
                 {badges.length} Badges
               </Text>
-              <Text className="text-gray-400">Tap to View Badges</Text>
+              <Text className="text-gray-200 font-light">
+                Tap to View Badges
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
 
         <View className="mt-6 flex-1">
-          <Text className="text-white text-lg font-semibold mb-2 text-center">
+          <Text className="text-white text-lg font-light text-center my-3">
             Recently Completed Routines
           </Text>
           <View className="flex-1">

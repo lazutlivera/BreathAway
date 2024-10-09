@@ -72,10 +72,9 @@ const BreathingAnimation = () => {
     AppwriteService.getCurrentUser()
       .then((user) => {
         if (user?.accountId) setCurrentUserId(user.accountId);
-        console.log("Current user ID:", user?.accountId);
       })
       .catch((error) => {
-        console.log("Failed to fetch user:", error);
+        throw new Error(error);
       });
 
     AppwriteService.getRoutinesById(id).then((result) => {
@@ -83,11 +82,6 @@ const BreathingAnimation = () => {
       countdown.value = (result.documents[0] as unknown as Routine).inhale;
       setIsReady(true);
     });
-
-
-
-
-
   }, [id]);
 
   const animatedProps = useAnimatedProps(() => ({
@@ -115,33 +109,32 @@ const BreathingAnimation = () => {
     (phaseName: BreathingPhase, duration: number): Promise<void> => {
       return new Promise((resolve) => {
         fadeInOut();
-  
-          phase.value = phaseName;
-          countdown.value = duration;
 
-          const targetProgress =
-            phaseName === "inhale"
-              ? 1
-              : phaseName === "exhale"
-              ? 0
-              : progress.value;
+        phase.value = phaseName;
+        countdown.value = duration;
 
-          progress.value = withTiming(targetProgress, {
+        const targetProgress =
+          phaseName === "inhale"
+            ? 1
+            : phaseName === "exhale"
+            ? 0
+            : progress.value;
+
+        progress.value = withTiming(targetProgress, {
+          duration: duration * 1000,
+          easing: Easing.inOut(Easing.cubic),
+        });
+
+        countdown.value = withTiming(
+          0,
+          {
             duration: duration * 1000,
-            easing: Easing.inOut(Easing.cubic),
-          });
-
-          countdown.value = withTiming(
-            0,
-            {
-              duration: duration * 1000,
-              easing: Easing.linear,
-            },
-            () => {
-              runOnJS(resolve)();
-            }
-          );
-       
+            easing: Easing.linear,
+          },
+          () => {
+            runOnJS(resolve)();
+          }
+        );
       });
     },
     [fadeInOut, progress, countdown, phase]
@@ -166,30 +159,27 @@ const BreathingAnimation = () => {
     }
     setIsAnimating(false);
 
-    console.log("Routine completed, saving...");
     AppwriteService.saveCompletedRoutine(
       currentUserId,
       routine.$id,
       routine.title,
       new Date().toISOString()
     )
-      .then(() => {
-        console.log("Routine successfully saved!");
-      })
+      .then(() => {})
       .catch((error) => {
-        console.log("Failed to save routine:", error);
+        throw new Error(error);
       });
   }, [routine, currentUserId, runCycle]);
 
   const stopAnimation = useCallback(() => {
     setIsAnimating(false);
-    
+
     if (routine && routine.$id) {
       router.replace({
         pathname: "/routines",
         params: {
-          id: routine.$id
-        }
+          id: routine.$id,
+        },
       });
     }
   }, [routine]);
@@ -203,7 +193,6 @@ const BreathingAnimation = () => {
       </AppGradient>
     );
   }
-
 
   return (
     <AppGradient colors={routine!.gradient}>
@@ -244,8 +233,7 @@ const BreathingAnimation = () => {
         </View>
         <TouchableOpacity
           className="absolute bottom-8 w-6/12 h-16 bg-black opacity-50 rounded-3xl items-center justify-center"
-          onPress={isAnimating ? stopAnimation : startAnimation
-          }
+          onPress={isAnimating ? stopAnimation : startAnimation}
         >
           <Text className="text-3xl text-white text-center tracking-wide">
             {isAnimating ? `Reset` : "Start"}

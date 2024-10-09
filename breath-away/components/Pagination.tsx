@@ -10,7 +10,7 @@ type Props = {
 
 const Pagination = ({ items, paginationIndex, scrollX }: Props) => {
   return (
-    <View className="flex-row justify-center items-center">
+    <View className="flex-row justify-center items-center mb-3">
       {items
         ? items.map((_: any, index: React.Key | null | undefined) => {
             return (

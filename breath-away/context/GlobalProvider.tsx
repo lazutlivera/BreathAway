@@ -57,32 +57,32 @@ const GlobalProvider: React.FC<GlobalProviderProps> = ({ children }) => {
         }
       })
       .catch((error) => {
-        console.log(error);
+        throw new Error(error);
       })
       .finally(() => {
         setIsLoading(false);
       });
 
-    AsyncStorage.getItem('showInstructions').then((value) => {
-      setShowInstructions(value === 'true');
+    AsyncStorage.getItem("showInstructions").then((value) => {
+      setShowInstructions(value === "true");
     });
   }, []);
 
   const toggleShowInstructions = (value: boolean) => {
     setShowInstructions(value);
-    AsyncStorage.setItem('showInstructions', value.toString());
+    AsyncStorage.setItem("showInstructions", value.toString());
   };
 
   return (
     <GlobalContext.Provider
-      value={{ 
-        isLoggedIn, 
-        setIsLoggedIn, 
-        user, 
-        setUser, 
-        isLoading, 
-        showInstructions, 
-        toggleShowInstructions 
+      value={{
+        isLoggedIn,
+        setIsLoggedIn,
+        user,
+        setUser,
+        isLoading,
+        showInstructions,
+        toggleShowInstructions,
       }}
     >
       {children}
