@@ -88,7 +88,7 @@ const BreathingAnimation = () => {
     strokeDashoffset: circleLength * (1 - progress.value),
   }));
 
-  const progressText = useDerivedValue(() => `${Math.ceil(countdown.value)}`);
+  const progressText = useDerivedValue(() => `${Math.max(0, Math.floor(countdown.value))}`);
 
   const phaseText = useDerivedValue(() => {
     switch (phase.value) {
@@ -122,19 +122,18 @@ const BreathingAnimation = () => {
 
         progress.value = withTiming(targetProgress, {
           duration: duration * 1000,
-          easing: Easing.inOut(Easing.cubic),
+          easing: Easing.linear,
         });
 
-        countdown.value = withTiming(
-          0,
-          {
-            duration: duration * 1000,
-            easing: Easing.linear,
-          },
-          () => {
-            runOnJS(resolve)();
+        const interval = setInterval(() => {
+          countdown.value = withTiming(countdown.value - 1, { duration: 100 });
+          if (countdown.value <= 0) {
+            clearInterval(interval);
+        
+              runOnJS(resolve)();
+            
           }
-        );
+        }, 1000);
       });
     },
     [fadeInOut, progress, countdown, phase]
@@ -142,10 +141,17 @@ const BreathingAnimation = () => {
 
   const runCycle = useCallback(async () => {
     if (!routine) return;
+
     await runPhase("inhale", routine.inhale);
-    if (routine.hold) await runPhase("hold", routine.hold);
+    
+    if (routine.hold && routine.hold > 0) {
+      await runPhase("hold", routine.hold);
+    }
+
     await runPhase("exhale", routine.exhale);
-    if (routine.holdAfterExhale) {
+    
+
+    if (routine.holdAfterExhale && routine.holdAfterExhale > 0) {
       await runPhase("holdAfterExhale", routine.holdAfterExhale);
     }
   }, [runPhase, routine]);
@@ -196,6 +202,10 @@ const BreathingAnimation = () => {
 
   return (
     <AppGradient colors={routine!.gradient}>
+      <Text className="text-white text-xl text-center mt-10">
+        
+        Set {currentSet}/{routine?.repeat}
+      </Text>
       <View className="flex-1 justify-center items-center mt-20 relative">
         <ReText
           className="text-6xl text-white opacity-70 text-center"
