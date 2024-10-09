@@ -19,11 +19,11 @@ import profilePictureUrl from "../../assets/images/logo.png";
 import CustomButton from "@/components/CustomButton";
 
 const gradients = [
+  ["#2E2E2E", "#424242", "#575757", "#6b6b6b"],
   ["#1e3c72", "#2a5298"],
   ["#ff7e5f", "#feb47b"],
   ["#6a11cb", "#2575fc"],
   ["#00c6ff", "#0072ff"],
-  ["#2E2E2E", "#424242", "#575757", "#6b6b6b"],
 ];
 
 const Profile = () => {
@@ -141,7 +141,6 @@ const Profile = () => {
               <Image source={Logout} resizeMode="contain" className="w-4 h-4" />
               <Text className="text-white ml-2 text-sm font-light">Logout</Text>
             </TouchableOpacity>
-     
           </View>
         </View>
         <View className="items-center mt-5">
