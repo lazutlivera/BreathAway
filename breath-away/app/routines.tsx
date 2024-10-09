@@ -1,5 +1,12 @@
 import React, { useCallback, useState, useEffect, useRef } from "react";
-import { Text, TouchableOpacity, View, Dimensions, Modal } from "react-native";
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  Dimensions,
+  Modal,
+  Image,
+} from "react-native";
 import AppGradient from "@/components/AppGradient";
 import Svg, { Circle } from "react-native-svg";
 import { ReText } from "react-native-redash";
@@ -19,6 +26,9 @@ import AppwriteService from "@/lib/appwrite";
 import { router } from "expo-router";
 
 import CustomButton from "@/components/CustomButton";
+
+import LottieView from "lottie-react-native";
+import back from "../assets/icons/left-arrow.png";
 
 
 const strokeBackgroundColor = "#303858";
@@ -94,7 +104,9 @@ const BreathingAnimation = () => {
     strokeDashoffset: circleLength * (1 - progress.value),
   }));
 
-  const progressText = useDerivedValue(() => `${Math.max(0, Math.floor(countdown.value))}`);
+  const progressText = useDerivedValue(
+    () => `${Math.max(0, Math.floor(countdown.value))}`
+  );
 
   const phaseText = useDerivedValue(() => {
     switch (phase.value) {
@@ -135,9 +147,8 @@ const BreathingAnimation = () => {
           countdown.value = withTiming(countdown.value - 1, { duration: 100 });
           if (countdown.value <= 0) {
             clearInterval(interval);
-        
-              runOnJS(resolve)();
-            
+
+            runOnJS(resolve)();
           }
         }, 1000);
       });
@@ -149,13 +160,12 @@ const BreathingAnimation = () => {
     if (!routine) return;
 
     await runPhase("inhale", routine.inhale);
-    
+
     if (routine.hold && routine.hold > 0) {
       await runPhase("hold", routine.hold);
     }
 
     await runPhase("exhale", routine.exhale);
-    
 
     if (routine.holdAfterExhale && routine.holdAfterExhale > 0) {
       await runPhase("holdAfterExhale", routine.holdAfterExhale);
@@ -210,8 +220,19 @@ const BreathingAnimation = () => {
 
   return (
     <AppGradient colors={routine!.gradient}>
+      <View className="flex">
+        <TouchableOpacity onPress={() => router.back()}>
+          <Image
+            source={back}
+            className="ml-6 mt-3 w-[25px] h-[25px]"
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <Text className="text-white text-center mt-4 font-bold text-2xl">
+          {routine?.title}
+        </Text>
+      </View>
       <Text className="text-white text-xl text-center mt-10">
-        
         Set {currentSet}/{routine?.repeat}
       </Text>
       <View className="flex-1 justify-center items-center mt-20 relative">
@@ -283,7 +304,10 @@ const BreathingAnimation = () => {
               />
             </TouchableOpacity>
             <Text className="text-white font-semibold text-3xl absolute mt-60 text-center">
-              Well done! You completed a routine.
+              Well done!
+            </Text>
+            <Text className="text-white font-semibold text-3xl absolute mt-72 text-center">
+              You completed a routine
             </Text>
 
             <CustomButton
