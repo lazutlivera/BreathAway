@@ -51,7 +51,7 @@ const Welcome = () => {
             <CustomButton
               title="Let's go!"
               onPress={() => router.push("/home")}
-              containerStyles="mt-4 w-[290px]"
+              containerStyles="mt-7 w-3/4"
             />
           </View>
         </View>

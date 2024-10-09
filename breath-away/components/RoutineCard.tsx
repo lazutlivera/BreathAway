@@ -20,6 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { Ionicons } from "@expo/vector-icons";
+import CustomButton from "./CustomButton";
 
 type Props = {
   item: any;
@@ -126,8 +127,10 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
               </Text>
             </ScrollView>
             <View className="flex-row justify-center w-full mt-5">
-              <TouchableOpacity
-                className="bg-[#0a4d4a] p-4 rounded-lg flex-1 mb-3"
+
+              <CustomButton
+                title="Start"
+
                 onPress={() => {
                   if (selectedRoutine) {
                     router.push({
@@ -140,11 +143,11 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
                     setModalVisible(false);
                   }
                 }}
-              >
-                <Text className="text-white text-center font-normal text-2xl">
-                  Start
-                </Text>
-              </TouchableOpacity>
+                containerStyles="mt-7 w-3/4"
+                isLoading={false}
+                textStyles="text-white"
+              />
+
             </View>
           </View>
         </View>

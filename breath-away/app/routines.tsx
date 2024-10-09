@@ -17,10 +17,9 @@ import Animated, {
 import { useRoute } from "@react-navigation/native";
 import AppwriteService from "@/lib/appwrite";
 import { router } from "expo-router";
-import Ionicons from "@expo/vector-icons/build/Ionicons";
+
 import CustomButton from "@/components/CustomButton";
-import LottieView from "lottie-react-native";
-import celebrate from "../assets/anims/Animation - 1728484275418.json";
+
 
 const strokeBackgroundColor = "#303858";
 const strokeColor = "#ffa500";
@@ -250,14 +249,12 @@ const BreathingAnimation = () => {
             text={phaseText}
           />
         </View>
-        <TouchableOpacity
-          className="absolute bottom-8 w-6/12 h-16 bg-black opacity-50 rounded-3xl items-center justify-center"
+        <CustomButton
+          title={isAnimating ? "Stop" : "Start"}
           onPress={isAnimating ? stopAnimation : startAnimation}
-        >
-          <Text className="text-3xl text-white text-center tracking-wide">
-            {isAnimating ? `Reset` : "Start"}
-          </Text>
-        </TouchableOpacity>
+          containerStyles="mt-7 w-3/4"
+          disabled={false}
+        />    
       </View>
       <Modal
         animationType="slide"

@@ -47,7 +47,7 @@ const SignUp = () => {
     <AppGradient colors={["#2E2E2E", "#424242", "#575757", "#6b6b6b"]}>
       <KeyboardAvoidingView behavior="padding" className="flex-1">
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View className="w-full justify-center min-h-[85vh] px-4 my-6">
+          <View className="w-full justify-center min-h-[85vh] px-4 my-6 items-center">
             <View className="flex justify-center items-center">
               <Image
                 source={Logo}
@@ -80,7 +80,7 @@ const SignUp = () => {
             <CustomButton
               title="Sign up"
               onPress={submit}
-              containerStyles="mt-7"
+              containerStyles="mt-7 w-3/4"
               isLoading={isSubmitting}
             />
             <View className="justify-center pt-5 flex-row gap-2">
