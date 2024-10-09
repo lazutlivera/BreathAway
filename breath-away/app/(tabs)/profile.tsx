@@ -9,7 +9,7 @@ import {
   Modal,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import AppwriteService from "@/lib/appwrite";
@@ -36,6 +36,19 @@ const Profile = () => {
   const scrollY = new Animated.Value(0);
 
   useEffect(() => {
+    const loadGradient = async () => {
+      try {
+        const savedGradient = await AsyncStorage.getItem("selectedGradient");
+        if (savedGradient !== null) {
+          setSelectedGradient(Number(savedGradient));
+        }
+      } catch (err) {
+        console.log("Failed to load gradient:", err);
+      }
+    };
+
+    loadGradient();
+
     AppwriteService.getUserCompletedRoutines()
       .then((result) => {
         setUsername(result.user.username);
@@ -44,6 +57,16 @@ const Profile = () => {
       })
       .catch((err) => console.log("Failed to fetch data:", err));
   }, []);
+
+  const handleGradientSelect = async (index: number) => {
+    try {
+      await AsyncStorage.setItem("selectedGradient", index.toString());
+      setSelectedGradient(index);
+      handleCloseBgModal();
+    } catch (err) {
+      console.log("Failed to save gradient:", err);
+    }
+  };
 
   const logout = async () => {
     await AppwriteService.signOut();
@@ -93,11 +116,6 @@ const Profile = () => {
 
   const handleCloseBgModal = () => {
     setBgModalVisible(false);
-  };
-
-  const handleGradientSelect = (index: number) => {
-    setSelectedGradient(index);
-    handleCloseBgModal();
   };
 
   return (
@@ -255,15 +273,10 @@ const Profile = () => {
               <TouchableOpacity
                 key={index}
                 onPress={() => handleGradientSelect(index)}
-                className="p-2 mb-2"
-                style={{
-                  backgroundColor: `linear-gradient(${gradient[0]}, ${gradient[1]})`,
-                  borderRadius: 5,
-                }}
+                className="mb-2 p-4 rounded-lg"
+                style={{ backgroundColor: gradient[0] }}
               >
-                <Text className="text-gray-700 text-lg">
-                  Gradient {index + 1}
-                </Text>
+                <Text className="text-white text-lg">Gradient {index + 1}</Text>
               </TouchableOpacity>
             ))}
             <TouchableOpacity
