@@ -53,7 +53,9 @@ const Home = () => {
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
       <View className="flex justify-center items-center p-16">
-        <Text className="text-white text-lg">Select a routine to begin</Text>
+        <Text className="text-white text-lg font-light">
+          Choose your state of mind
+        </Text>
       </View>
       {routines ? (
         <Animated.FlatList
