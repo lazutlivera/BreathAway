@@ -65,7 +65,10 @@ const Home = () => {
         <Switch
           value={showInstructions}
           onValueChange={toggleShowInstructions}
-          className="mr-2 p-1"
+          style={{ marginRight: 8, padding: 4 }}
+          thumbColor={showInstructions ? "#ffffff" : "#f4f3f4"}
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          ios_backgroundColor="#767577"
         />
         <TouchableOpacity
           className="flex-row items-center justify-between"

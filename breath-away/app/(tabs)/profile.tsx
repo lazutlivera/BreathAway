@@ -16,6 +16,7 @@ import AppwriteService from "@/lib/appwrite";
 import Logout from "../../assets/icons/logout.png";
 import AppGradient from "@/components/AppGradient";
 import profilePictureUrl from "../../assets/images/logo.png";
+import CustomButton from "@/components/CustomButton";
 
 const gradients = [
   ["#1e3c72", "#2a5298"],
@@ -139,6 +140,7 @@ const Profile = () => {
               <Image source={Logout} resizeMode="contain" className="w-4 h-4" />
               <Text className="text-white ml-2 text-sm font-light">Logout</Text>
             </TouchableOpacity>
+     
           </View>
         </View>
         <View className="items-center mt-5">
