@@ -20,6 +20,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import GestureRecognizer from "react-native-swipe-gestures";
 import { Ionicons } from "@expo/vector-icons";
+import CustomButton from "./CustomButton";
 
 type Props = {
   item: any;
@@ -91,14 +92,14 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
             className="w-[290px] h-[350px] rounded-2xl bg-blue-400"
           />
           <LinearGradient
-            colors={["transparent", "rgba(0, 0, 0, 0.8)"]}
+            colors={["transparent", "rgba(0, 0, 0, 0.6)"]}
             className="absolute h-[350px] w-[290px] rounded-2xl flex justify-around items-center"
           >
-            <Text className="text-white text-3xl font-semibold tracking-wider">
+            <Text className="text-slate-50 text-4xl font-medium tracking-wider drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
               {item.title}
             </Text>
             <Image source={{ uri: item.icon }} className="w-[70px] h-[70px]" />
-            <Text className="text-white text-lg font-light tracking-wide px-8 text-center">
+            <Text className="text-white text-xl font-light tracking-wide px-8 text-center">
               {item.description}
             </Text>
           </LinearGradient>
@@ -106,7 +107,7 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
       </Animated.View>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View className="flex-1 justify-end">
-          <View className="max-h-3/4 bg-[#161b2e] rounded-t-3xl p-5 items-center relative">
+          <View className="max-h-3/4 bg-[#2E2E2E] rounded-t-3xl p-5 items-center relative">
             <TouchableOpacity
               className="absolute top-2 right-2 z-10"
               onPress={() => setModalVisible(false)}
@@ -121,16 +122,15 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
             </TouchableOpacity>
             <View className="w-10 h-1 bg-white/30 rounded-full mb-5" />
             <ScrollView className="w-full">
-              <Text className="text-white text-2xl font-bold mb-5 text-center">
-                {selectedRoutine?.title}
-              </Text>
-              <Text className="text-white text-base mb-5 text-center">
+              <Text className="text-white text-lg font-light mb-5 text-center">
                 {selectedInstructions}
               </Text>
             </ScrollView>
             <View className="flex-row justify-center w-full mt-5">
-              <TouchableOpacity
-                className="bg-[#0a4d4a] p-4 rounded-lg flex-1"
+
+              <CustomButton
+                title="Start"
+
                 onPress={() => {
                   if (selectedRoutine) {
                     router.push({
@@ -143,9 +143,11 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
                     setModalVisible(false);
                   }
                 }}
-              >
-                <Text className="text-white text-center font-bold">Start</Text>
-              </TouchableOpacity>
+                containerStyles="mt-7 w-3/4"
+                isLoading={false}
+                textStyles="text-white"
+              />
+
             </View>
           </View>
         </View>

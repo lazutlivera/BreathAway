@@ -60,12 +60,16 @@ const Home = () => {
   };
 
   return (
-    <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
+    <AppGradient colors={["#2E2E2E", "#424242", "#575757", "#6b6b6b"]}>
       <View className="flex-row items-center mt-1">
         <Switch
           value={showInstructions}
           onValueChange={toggleShowInstructions}
-          className="mr-2 p-1"
+          style={{ marginRight: 8, padding: 4 }}
+          thumbColor={showInstructions ? "#ffffff" : "#f4f3f4"}
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          ios_backgroundColor="#767577"
+
         />
         <TouchableOpacity
           className="flex-row items-center justify-between"
@@ -79,30 +83,26 @@ const Home = () => {
           )}
         </TouchableOpacity>
       </View>
-
-      <View className="flex justify-center items-center p-12">
-        <Text className="text-white text-lg font-light">
-          Choose your state of mind
-        </Text>
-      </View>
-
       {routines.length > 0 && (
         <>
-          <Animated.FlatList
-            data={data}
-            renderItem={({ item, index }) => (
-              <RoutineCard item={item} index={index} scrollX={scrollX} />
-            )}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            pagingEnabled
-            onScroll={onScrollHandler}
-            viewabilityConfigCallbackPairs={
-              viewabilityConfigCallbackPairs.current
-            }
-            onEndReached={() => setData((prev) => [...prev, ...routines])}
-            onEndReachedThreshold={0.5}
-          />
+          <View className="flex-1 justify-center mt-24">
+            <Animated.FlatList
+              data={data}
+              renderItem={({ item, index }) => (
+                <RoutineCard item={item} index={index} scrollX={scrollX} />
+              )}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              pagingEnabled
+              onScroll={onScrollHandler}
+              viewabilityConfigCallbackPairs={
+                viewabilityConfigCallbackPairs.current
+              }
+              onEndReached={() => setData((prev) => [...prev, ...routines])}
+              onEndReachedThreshold={0.5}
+            />
+          </View>
+
           <Pagination
             items={routines}
             scrollX={scrollX}

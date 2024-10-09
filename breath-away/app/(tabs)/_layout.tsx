@@ -10,7 +10,10 @@ const TabsLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarStyle: { backgroundColor: "#161b2e" },
+        tabBarStyle: { backgroundColor: "#6b6b6b" },
+        tabBarIconStyle: { color: "#dbdbdb" },
+        tabBarInactiveTintColor: "#dbdbdb",
+        tabBarActiveTintColor: "#2E2E2E",
       }}
     >
       <Tabs.Screen
@@ -26,6 +29,7 @@ const TabsLayout = () => {
             />
           ),
           tabBarLabel: "Home",
+          tabBarLabelStyle: { fontSize: 18, fontWeight: 400 },
           tabBarIcon: ({ color }) => (
             <AntDesign name="home" size={24} color={color} />
           ),
@@ -44,6 +48,7 @@ const TabsLayout = () => {
             />
           ),
           tabBarLabel: "FAQ",
+          tabBarLabelStyle: { fontSize: 18, fontWeight: 400 },
           tabBarIcon: ({ color }) => (
             <Entypo name="open-book" size={24} color={color} />
           ),
@@ -63,6 +68,7 @@ const TabsLayout = () => {
             />
           ),
           tabBarLabel: "Profile",
+          tabBarLabelStyle: { fontSize: 18, fontWeight: 400 },
           tabBarIcon: ({ color }) => (
             <Entypo name="user" size={24} color={color} />
           ),

@@ -10,11 +10,11 @@ import { LinearGradient } from "expo-linear-gradient";
 
 const Welcome = () => {
   return (
-    <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
+    <AppGradient colors={["#2E2E2E", "#424242", "#575757", "#6b6b6b"]}>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full justify-between items-center min-h-[85vh] px-4">
           <View className="relative mt-16">
-            <Text className="text-3xl text-white font-bold text-center">
+            <Text className="text-3xl text-white font-light text-center mb-10">
               Welcome to BreathAway
             </Text>
           </View>
@@ -25,17 +25,17 @@ const Welcome = () => {
             />
             <LinearGradient
               colors={["transparent", "rgba(0, 0, 0, 0.8)"]}
-              className="absolute h-[350px] w-[290px] rounded-2xl flex justify-around items-center"
+              className="absolute h-[350px] w-[290px] rounded-2xl flex justify-around items-center opacity-70"
             >
               <Image source={warning} className="w-[70px] h-[70px]" />
-              <Text className="text-white text-lg font-normal tracking-wide px-6 text-center">
+              <Text className="text-white text-2xl font-medium tracking-wide px-6 text-center">
                 Take caution when exercising breathwork. If you are new to
                 breathing routines, please find more information in our{" "}
                 <Text
                   onPress={() => {
                     router.push("/(tabs)/faq");
                   }}
-                  className="text-yellow-600 font-semibold"
+                  className="text-blue-950 font-medium"
                 >
                   FAQ
                 </Text>
@@ -44,14 +44,14 @@ const Welcome = () => {
           </View>
 
           <View>
-            <Text className="text-base font-regular text-gray-100 mt-7 text-center">
+            <Text className="text-xl font-light text-gray-100 mt-7 text-center mb-5">
               Ready to explore?
             </Text>
 
             <CustomButton
               title="Let's go!"
               onPress={() => router.push("/home")}
-              containerStyles="mt-4 w-[290px]"
+              containerStyles="mt-7 w-3/4"
             />
           </View>
         </View>

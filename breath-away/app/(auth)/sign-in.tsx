@@ -67,9 +67,9 @@ function SignIn() {
   };
 
   return (
-    <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
+    <AppGradient colors={["#2E2E2E", "#424242", "#575757", "#6b6b6b"]}>
       <ScrollView>
-        <View className="w-full justify-center min-h-[85vh] px-4 my-6">
+        <View className="w-full justify-center min-h-[85vh] px-4 my-6 items-center">
           <View className="flex justify-center items-center">
             <Image
               source={Logo}
@@ -94,9 +94,10 @@ function SignIn() {
             otherStyles="mt-7"
           />
           <CustomButton
+
             title="Sign in"
             onPress={submit}
-            containerStyles="mt-7"
+            containerStyles="mt-7 w-3/4"
             isLoading={isSubmitting}
           />
           <View className="justify-center pt-5 flex-row gap-2">
