@@ -24,12 +24,11 @@ import Animated, {
 import { useRoute } from "@react-navigation/native";
 import AppwriteService from "@/lib/appwrite";
 import { router } from "expo-router";
-
+import { Ionicons } from "@expo/vector-icons";
 import CustomButton from "@/components/CustomButton";
 
 import LottieView from "lottie-react-native";
 import back from "../assets/icons/left-arrow.png";
-
 
 const strokeBackgroundColor = "#303858";
 const strokeColor = "#ffa500";
@@ -275,7 +274,7 @@ const BreathingAnimation = () => {
           onPress={isAnimating ? stopAnimation : startAnimation}
           containerStyles="mt-7 w-3/4"
           disabled={false}
-        />    
+        />
       </View>
       <Modal
         animationType="slide"
