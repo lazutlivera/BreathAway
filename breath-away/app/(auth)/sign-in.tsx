@@ -70,12 +70,14 @@ function SignIn() {
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
       <ScrollView>
         <View className="w-full justify-center min-h-[85vh] px-4 my-6">
-          <Image
-            source={Logo}
-            resizeMode="contain"
-            className="w-[325px] h-[150px]"
-          />
-          <Text className="text-2xl text-white mt-10 font-semibold">
+          <View className="flex justify-center items-center">
+            <Image
+              source={Logo}
+              resizeMode="contain"
+              className="w-[325px] h-[150px]"
+            />
+          </View>
+          <Text className="text-2xl text-white mt-9 font-semibold">
             Log in to BreathAway
           </Text>
           <FormField

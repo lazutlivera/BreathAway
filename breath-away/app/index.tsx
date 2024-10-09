@@ -2,7 +2,7 @@ import { ScrollView, View, Text, Image } from "react-native";
 import { Redirect, router } from "expo-router";
 import "react-native-url-polyfill/auto";
 import CustomButton from "../components/CustomButton";
-import LogoAndText from "../assets/images/logo.png";
+import Logo from "../assets/images/logo.png";
 import AppGradient from "@/components/AppGradient";
 import { useGlobalContext } from "../context/GlobalProvider";
 
@@ -18,20 +18,20 @@ export default function App() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="w-full justify-center items-center min-h-[85vh] px-4">
           <Image
-            source={LogoAndText}
-            className="w-[130px] h-[84px]"
+            source={Logo}
+            className="w-[195px] h-[126px]"
             resizeMode="contain"
           />
 
           <View className="relative mt-5">
-            <Text className="text-3xl text-white font-bold text-center m-1">
+            <Text className="text-3xl text-white font-bold text-center">
               Discover Endless Possibilities with{" "}
-              <Text className="text-secondary 200">BreathAway</Text>
+              <Text className="text-yellow-600">BreathAway</Text>
             </Text>
           </View>
-          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">
-            Where creativity meets innovation: embark on a journey of limitless
-            exploration with BreathAway
+          <Text className="text-base font-regular text-gray-100 mt-7 text-center">
+            Embark on a journey of limitless exploration with breathing
+            exercises for your every need
           </Text>
 
           <CustomButton
