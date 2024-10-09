@@ -47,12 +47,13 @@ const Welcome = () => {
             <Text className="text-xl font-light text-gray-100 mt-7 text-center mb-5">
               Ready to explore?
             </Text>
-
-            <CustomButton
-              title="Let's go!"
-              onPress={() => router.push("/home")}
-              containerStyles="mt-7 w-3/4"
-            />
+            <View className="flex justify-center items-center w-full">
+              <CustomButton
+                title="Let's go!"
+                onPress={() => router.push("/home")}
+                containerStyles="mt-7 w-3/4"
+              />
+            </View>
           </View>
         </View>
       </ScrollView>

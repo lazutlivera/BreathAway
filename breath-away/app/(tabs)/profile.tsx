@@ -183,16 +183,8 @@ const Profile = () => {
             {completedRoutines.length === 0 ? (
               <>
                 <Text className="text-white text-lg text-center mb-4">
-                  Select your first routine.
+                  You are yet to try a routine!
                 </Text>
-                <TouchableOpacity
-                  onPress={handleRedirectToHome}
-                  className="bg-green-500 px-5 py-2 rounded-lg shadow-lg mt-2"
-                >
-                  <Text className="text-white text-center text-lg font-semibold">
-                    Go to Homepage
-                  </Text>
-                </TouchableOpacity>
               </>
             ) : (
               <Animated.FlatList
