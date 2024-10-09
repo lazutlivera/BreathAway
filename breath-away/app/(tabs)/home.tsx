@@ -8,6 +8,9 @@ import Animated, {
 } from "react-native-reanimated";
 import Pagination from "@/components/Pagination";
 import RoutineCard from "@/components/RoutineCard";
+import { Switch } from "react-native";
+import { useGlobalContext } from "@/context/GlobalProvider";
+import { Entypo } from "@expo/vector-icons";
 
 const Home = () => {
   const [routines, setRoutines] = useState<any[]>([]);
@@ -21,6 +24,7 @@ const Home = () => {
     });
   }, []);
 
+  const { showInstructions, toggleShowInstructions } = useGlobalContext();
   const scrollX = useSharedValue(0);
 
   const onScrollHandler = useAnimatedScrollHandler({
@@ -34,10 +38,7 @@ const Home = () => {
   }: {
     viewableItems: ViewToken[];
   }) => {
-    if (
-      viewableItems[0].index !== undefined &&
-      viewableItems[0].index !== null
-    ) {
+    if (viewableItems[0]?.index !== undefined) {
       setPaginationIndex(viewableItems[0].index % 4);
     }
   };
@@ -52,31 +53,43 @@ const Home = () => {
 
   return (
     <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
+      <View className="flex-row items-center">
+        <Switch
+          value={showInstructions}
+          onValueChange={toggleShowInstructions}
+          className="mr-2"
+        />
+        <Entypo name="info" size={20} color="white" />
+      </View>
+
       <View className="flex justify-center items-center p-16">
         <Text className="text-white text-lg">Select a routine to begin</Text>
       </View>
-      {routines ? (
-        <Animated.FlatList
-          data={data}
-          renderItem={({ item, index }) => (
-            <RoutineCard item={item} index={index} scrollX={scrollX} />
-          )}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          onScroll={onScrollHandler}
-          viewabilityConfigCallbackPairs={
-            viewabilityConfigCallbackPairs.current
-          }
-          onEndReached={() => setData([...data, ...routines])}
-          onEndReachedThreshold={0.5}
-        />
-      ) : null}
-      <Pagination
-        items={routines}
-        scrollX={scrollX}
-        paginationIndex={paginationIndex}
-      />
+
+      {routines.length > 0 && (
+        <>
+          <Animated.FlatList
+            data={data}
+            renderItem={({ item, index }) => (
+              <RoutineCard item={item} index={index} scrollX={scrollX} />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            onScroll={onScrollHandler}
+            viewabilityConfigCallbackPairs={
+              viewabilityConfigCallbackPairs.current
+            }
+            onEndReached={() => setData((prev) => [...prev, ...routines])}
+            onEndReachedThreshold={0.5}
+          />
+          <Pagination
+            items={routines}
+            scrollX={scrollX}
+            paginationIndex={paginationIndex}
+          />
+        </>
+      )}
     </AppGradient>
   );
 };

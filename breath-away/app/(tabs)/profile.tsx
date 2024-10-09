@@ -5,10 +5,10 @@ import {
   TouchableOpacity,
   Image,
   Alert,
-  Switch,
   Animated,
   Modal,
 } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
@@ -75,11 +75,6 @@ const Profile = () => {
     console.log(`Pressed ${routineName}`);
   };
 
-  const handleToggleShowInstructions = (value: boolean) => {
-    toggleShowInstructions(value);
-    setBgModalVisible(false);
-  };
-
   const handleRedirectToHome = () => {
     router.push("/home");
   };
@@ -92,7 +87,6 @@ const Profile = () => {
     setModalVisible(false);
   };
 
-  // Handle opening background gradient selector
   const handleOpenBgModal = () => {
     setBgModalVisible(true);
   };
@@ -109,17 +103,14 @@ const Profile = () => {
   return (
     <AppGradient colors={gradients[selectedGradient]}>
       <View className="flex-1 justify-between">
-        <View className="px-4 mt-4 space-y-4">
+        <View className="px-4 mt-4">
           <View className="flex-row items-center justify-between">
-            <View className="flex-row items-center">
-              <Switch
-                value={showInstructions}
-                onValueChange={handleToggleShowInstructions}
-                className="mr-2"
-              />
-              <Text className="text-white text-lg">Show Instructions</Text>
-            </View>
-
+            <TouchableOpacity
+              onPress={handleOpenBgModal}
+              className="bg-white rounded-lg px-4 py-2 flex flex-row items-center justify-center"
+            >
+              <Entypo name="brush" size={20} color="black" className="mr-2" />
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={confirmLogout}
               className="bg-red-600 rounded-lg px-4 py-2 flex flex-row items-center justify-center"
@@ -128,18 +119,7 @@ const Profile = () => {
               <Text className="text-white ml-2 text-sm">Logout</Text>
             </TouchableOpacity>
           </View>
-
-          <TouchableOpacity
-            onPress={handleOpenBgModal}
-            className="bg-white rounded-lg px-4 py-2 flex flex-row items-center justify-center"
-          >
-            <Text className="text-black text-sm font-medium">
-              Change Background
-            </Text>
-          </TouchableOpacity>
         </View>
-
-        {/* Profile Info */}
         <View className="items-center mt-5">
           <Animated.Image
             source={profilePictureUrl}
@@ -166,7 +146,6 @@ const Profile = () => {
           </View>
         </View>
 
-        {/* Recently Completed Routines section */}
         <View className="mt-6 flex-1">
           <Text className="text-white text-lg font-semibold mb-2 text-center">
             Recently Completed Routines
@@ -231,7 +210,6 @@ const Profile = () => {
         </View>
       </View>
 
-      {/* Modal for showing badges */}
       <Modal
         visible={modalVisible}
         transparent={true}
