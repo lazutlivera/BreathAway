@@ -23,7 +23,7 @@ const Faq = () => {
     <>
       <AppGradient colors={["#161b2e", "#0a4d4a", "#766e67"]}>
         <View>
-          <Text className="text-white text-2xl text-center mt-10 mb-5 font-light">
+          <Text className="text-white text-2xl text-center mt-10 mb-5 font-semibold">
             Frequently Asked Questions
           </Text>
         </View>

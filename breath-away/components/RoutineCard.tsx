@@ -98,7 +98,7 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
               {item.title}
             </Text>
             <Image source={{ uri: item.icon }} className="w-[70px] h-[70px]" />
-            <Text className="text-white text-sm font-medium tracking-wide px-8 text-center">
+            <Text className="text-white text-lg font-light tracking-wide px-4 text-center">
               {item.description}
             </Text>
           </LinearGradient>
