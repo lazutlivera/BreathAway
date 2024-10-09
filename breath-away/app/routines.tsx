@@ -1,5 +1,5 @@
-import React, { useCallback, useState, useEffect } from "react";
-import { Text, TouchableOpacity, View, Dimensions } from "react-native";
+import React, { useCallback, useState, useEffect, useRef } from "react";
+import { Text, TouchableOpacity, View, Dimensions, Modal } from "react-native";
 import AppGradient from "@/components/AppGradient";
 import Svg, { Circle } from "react-native-svg";
 import { ReText } from "react-native-redash";
@@ -17,7 +17,9 @@ import Animated, {
 import { useRoute } from "@react-navigation/native";
 import AppwriteService from "@/lib/appwrite";
 import { router } from "expo-router";
+
 import CustomButton from "@/components/CustomButton";
+
 
 const strokeBackgroundColor = "#303858";
 const strokeColor = "#ffa500";
@@ -42,12 +44,15 @@ interface Routine {
 type BreathingPhase = "inhale" | "hold" | "exhale" | "holdAfterExhale";
 
 const BreathingAnimation = () => {
+  const animation = useRef<LottieView>(null);
+
   const route = useRoute();
   const { id } = route.params as { id: string };
 
   const [routine, setRoutine] = useState<Routine | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const progress = useSharedValue(0);
   const countdown = useSharedValue(0);
@@ -172,7 +177,9 @@ const BreathingAnimation = () => {
       routine.title,
       new Date().toISOString()
     )
-      .then(() => {})
+      .then(() => {
+        setModalVisible(true);
+      })
       .catch((error) => {
         throw new Error(error);
       });
@@ -249,6 +256,47 @@ const BreathingAnimation = () => {
           disabled={false}
         />    
       </View>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View className="flex-1 justify-center items-center">
+          <View className="h-full w-full bg-[#2E2E2E] items-center p-5">
+            <LottieView
+              autoPlay
+              ref={animation}
+              style={{ width: width, height: height }}
+              resizeMode="cover"
+              source={require("../assets/anims/Animation - 1728484275418.json")}
+            />
+            <TouchableOpacity
+              className="absolute top-20 right-8 z-10"
+              onPress={() => setModalVisible(false)}
+            >
+              <Ionicons
+                name="close"
+                size={20}
+                color="white"
+                marginTop={5}
+                marginRight={5}
+              />
+            </TouchableOpacity>
+            <Text className="text-white font-semibold text-3xl absolute mt-60 text-center">
+              Well done! You completed a routine.
+            </Text>
+
+            <CustomButton
+              title="Home"
+              onPress={() => {
+                router.push("/home");
+                setModalVisible(false);
+              }}
+              containerStyles="mt-96 absolute px-8"
+            />
+          </View>
+        </View>
+      </Modal>
     </AppGradient>
   );
 };

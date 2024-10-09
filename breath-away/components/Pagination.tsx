@@ -10,7 +10,7 @@ type Props = {
 
 const Pagination = ({ items, paginationIndex, scrollX }: Props) => {
   return (
-    <View className="flex-row justify-center items-center mb-3">
+    <View className="flex-row justify-center items-center mb-5">
       {items
         ? items.map((_: any, index: React.Key | null | undefined) => {
             return (
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   dot: {
     backgroundColor: "#aaa",
     height: 8,
-    width: 8,
+    width: 16,
     marginHorizontal: 2,
     borderRadius: 8,
   },

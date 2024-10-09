@@ -23,6 +23,7 @@ const gradients = [
   ["#ff7e5f", "#feb47b"],
   ["#6a11cb", "#2575fc"],
   ["#00c6ff", "#0072ff"],
+  ["#2E2E2E", "#424242", "#575757", "#6b6b6b"],
 ];
 
 const Profile = () => {
@@ -286,9 +287,7 @@ const Profile = () => {
                 onPress={() => handleGradientSelect(index)}
                 className="mb-2 p-4 rounded-lg"
                 style={{ backgroundColor: gradient[0] }}
-              >
-                <Text className="text-white text-lg">Gradient {index + 1}</Text>
-              </TouchableOpacity>
+              ></TouchableOpacity>
             ))}
             <TouchableOpacity
               onPress={handleCloseBgModal}
