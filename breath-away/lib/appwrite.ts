@@ -26,7 +26,6 @@ class AppwriteService {
     this.databases = new Databases(this.client);
   }
 
-
   async createUser(email: string, password: string, username: string) {
     try {
       const newAccount = await this.account.create(
@@ -52,14 +51,16 @@ class AppwriteService {
 
       return newUser;
     } catch (error: any) {
-      console.log(error);
       throw new Error(error);
     }
   }
 
   async signIn(email: string, password: string) {
     try {
-      const session = await this.account.createEmailPasswordSession(email, password);
+      const session = await this.account.createEmailPasswordSession(
+        email,
+        password
+      );
 
       return session;
     } catch (error: any) {
@@ -83,7 +84,7 @@ class AppwriteService {
 
       return currentUser.documents[0];
     } catch (error: any) {
-      console.log(error);
+      throw new Error(error);
     }
   }
 
@@ -124,14 +125,13 @@ class AppwriteService {
     }
   }
 
-  async saveCompletedRoutine(userId: string, routineId: string, routineName: string, completionDate: string) {
+  async saveCompletedRoutine(
+    userId: string,
+    routineId: string,
+    routineName: string,
+    completionDate: string
+  ) {
     try {
-      console.log("Saving completed routine with params:", {
-        userId,
-        routineId,
-        routineName,
-        completionDate,
-      });
       const result = await this.databases.createDocument(
         config.databaseId,
         config.completedRoutines,
@@ -145,7 +145,6 @@ class AppwriteService {
       );
       return result;
     } catch (error: any) {
-      console.log("Error saving completed routine:", error);
       throw new Error(error);
     }
   }
@@ -171,15 +170,11 @@ class AppwriteService {
         config.completedRoutines,
         [Query.equal("userId", user.accountId)]
       );
-
-      console.log("User's completed routines:", completedRoutinesResult);
-
       return {
         user,
         completedRoutines: completedRoutinesResult.documents,
       };
     } catch (error: any) {
-      console.log("Error fetching user and completed routines:", error);
       throw new Error(error);
     }
   }

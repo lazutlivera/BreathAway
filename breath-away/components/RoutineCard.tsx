@@ -94,11 +94,11 @@ const RoutineCard = ({ item, index, scrollX }: Props) => {
             colors={["transparent", "rgba(0, 0, 0, 0.8)"]}
             className="absolute h-[350px] w-[290px] rounded-2xl flex justify-around items-center"
           >
-            <Text className="text-white text-2xl font-semibold tracking-wider">
+            <Text className="text-white text-3xl font-semibold tracking-wider">
               {item.title}
             </Text>
             <Image source={{ uri: item.icon }} className="w-[70px] h-[70px]" />
-            <Text className="text-white text-lg font-light tracking-wide px-4 text-center">
+            <Text className="text-white text-lg font-light tracking-wide px-8 text-center">
               {item.description}
             </Text>
           </LinearGradient>
