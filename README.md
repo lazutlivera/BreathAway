@@ -7,7 +7,6 @@ Breath-Away is a mobile application designed to help users practice and improve 
 - Guided breathing exercises
 - Progress tracking and statistics
 - User profiles
-- Reminders and notifications
 
 ## Technology Stack
 
