@@ -28,7 +28,7 @@ Breath-Away is a mobile application designed to help users practice and improve 
 
 1. Clone the repository:
    ```
-   git clone https://github.com/ilterr/BreathAway.git
+   git clone https://github.com/lazutlivera/BreathAway.git
    cd BreathAway/breath-away
    ```
 
